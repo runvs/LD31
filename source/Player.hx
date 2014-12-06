@@ -33,8 +33,12 @@ class Player extends FlxSprite
         
         state = playState;
         
-		makeGraphic(24, 24, FlxColorUtil.makeFromARGB(1.0, 125, 255, 125));
-
+		//makeGraphic(24, 24, FlxColorUtil.makeFromARGB(1.0, 125, 255, 125));
+        loadGraphic(AssetPaths.player__png, true, 16, 16);
+        animation.add("normal", [0], 30, true);
+        animation.add("die", [1, 2, 3, 4, 5, 6, 7, 8, 9], 30, false);
+        animation.play("normal");
+        
         healthCurrent = healtMax = GameProperties.PlayerHealthDefault;
 		
         weaponManager = new WeaponManager();
@@ -106,6 +110,7 @@ class Player extends FlxSprite
                 shoot();
 			}		
 		}
+        trace(weapon.shootTimerCurrent);
         if (reload)
         {
             weapon.reload();
@@ -120,14 +125,16 @@ class Player extends FlxSprite
         
         var s: Shot  = new Shot(startX, startY, 
                                 weapon.calculateWeaponSpread(startX, startY, targetPosition), 
-                                weapon.shoot(), weapon.ShotSpeed);
+                                weapon);
+        weapon.shoot();
         state.spawnShot(s);
         for (i in 1 ... weapon.ShotsFired)
         {
             s = new Shot(startX, startY, 
                         weapon.calculateWeaponSpread(startX, startY, targetPosition), 
-                        weapon.shoot(true), weapon.ShotSpeed);
+                        weapon);
             state.spawnShot(s);
+            weapon.shoot(true);
         }
     }
     

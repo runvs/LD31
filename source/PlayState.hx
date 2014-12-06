@@ -130,13 +130,12 @@ class PlayState extends FlxState
                     }
                     if (FlxG.overlap(e, s))
                     {
-                        //if (FlxG.pixelPerfectOverlap(e, s,1))
+                        if (FlxG.pixelPerfectOverlap(e, s,1))
                         {
                             shotEnemyCollision(e, s);
                         }
                     }
                 }
-                
             }
         }
     }

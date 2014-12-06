@@ -30,7 +30,8 @@ class Enemy extends FlxSprite
 		
 		state = playstate;
 		
-		makeGraphic(24, 24, FlxColorUtil.makeFromARGB(1.0, 255, 125, 125));
+		//makeGraphic(24, 24, FlxColorUtil.makeFromARGB(1.0, 255, 125, 125));
+        loadGraphic(AssetPaths.snowman__png, false, 32, 32);
 		targetPosition = new FlxPoint();
         
         healthCurrent = healtMax = GameProperties.EnemyHealthDefault;

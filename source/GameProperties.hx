@@ -6,7 +6,7 @@ package ;
  */
 class GameProperties
 {
-	public static var PlayerMovementVelocityAdd : Float = 20;
+	public static var PlayerMovementVelocityAdd : Float = 18;
 	public static var PlayerMovementVelocityDrag : Float = 0.9;
 	public static var PlayerHealthDefault : Float = 15;
     

@@ -33,6 +33,7 @@ class Weapon extends FlxObject
     public var Spread : Float;  // in degree
     
     public var ShotSpeed : Float;
+    public var type : ShotType;
     ///////////////////////////////////////////////////////////
     
     

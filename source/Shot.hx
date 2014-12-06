@@ -17,20 +17,38 @@ class Shot extends FlxSprite
     
     private var lifetime:Float;
     
-	public function new(X:Float=0, Y:Float=0, target : FlxPoint, d:Float, velo:Float) 
+    private var type : ShotType;
+    
+	public function new(X:Float=0, Y:Float=0, target : FlxPoint, w:Weapon) 
 	{
 		super(X, Y);
+                
         
-        damage = d;
         
-		makeGraphic(4, 4, FlxColorUtil.makeFromARGB(1.0, 250, 250, 250));
-		
-		var direction : FlxVector = new FlxVector(target.x - x, target.y - y);
-		direction.normalize();
-		velocity.x = direction.x * velo;
-		velocity.y = direction.y * velo;
-        alive = true;
-        lifetime = 10;
+        damage = w.getDamage();
+        
+        var direction : FlxVector = new FlxVector(target.x - x, target.y - y);
+        direction.normalize();
+        velocity.x = direction.x * w.ShotSpeed;
+		velocity.y = direction.y * w.ShotSpeed;
+        
+        angle = direction.degrees;
+        
+        type = w.type;
+         lifetime = 10;
+        
+        if (type == ShotType.Bullet)
+        {
+            makeGraphic(4, 4, FlxColorUtil.makeFromARGB(1.0, 250, 250, 250));	
+        }
+		else if (type == ShotType.Microwave)
+        {
+            makeGraphic(4, 8, FlxColorUtil.makeFromARGB(1.0, 250, 25, 250));	
+        }
+
+
+        
+        
 	}
 	
 	public override function update(): Void
