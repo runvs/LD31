@@ -31,16 +31,13 @@ class PlayState extends FlxState
 	{
 		super.create();
 		player = new Player(125, 125, this);
-		add(player);
-		
+
 		enemyList = new FlxTypedGroup<Enemy>();
-		add(enemyList);
 		
 		spawner = new EnemySpawner(this);
 		add(spawner);
         
 		shotList = new FlxTypedGroup<Shot>();
-        add(shotList);
 	}
 	
 	/**
@@ -61,21 +58,59 @@ class PlayState extends FlxState
         
         cleanUp();
         
+        
+        
+        player.update();
+        
+        for (j in 0 ... shotList.length)
+		{
+            var s:Shot = shotList.members[j];
+            s.update();
+        }
+        
+        for (j in 0 ... enemyList.length)
+        {
+            var e:Enemy = enemyList.members[j];
+            e.update();
+        }
+        
         doCollisions();
         
 	}	
     
+    override public function draw():Void
+    {
+        super.draw();
+        
+        player.draw();
+        
+        for (j in 0 ... enemyList.length)
+        {
+            var e:Enemy = enemyList.members[j];
+            e.draw();
+        }
+        
+        for (j in 0... shotList.length)
+		{
+            var s:Shot = shotList.members[j];
+            s.draw();
+        }
+        
+        player.drawHUD();
+    }
+    
     private function cleanUp():Void
     {
-        // TODO!!!
-        //{
-		//	var newShotList:FlxTypedGroup<Shot> = new FlxTypedGroup<Shot>();
-		//	shotList.forEach(function(s:Shot) { if (s.alive) newShotList.add(s); else s.destroy(); } );
-        //    shotList = newShotList;
-		//}
+        {
+			var newShotList:FlxTypedGroup<Shot> = new FlxTypedGroup<Shot>();
+			shotList.forEach(function(s:Shot) { if (s.alive) newShotList.add(s); else s.destroy(); } );
+            shotList = newShotList;
+		}
         
         {
-            enemyList.forEach(function(e:Enemy) { if (!e.alive) { e.destroy(); }} );
+            var newEnemyList:FlxTypedGroup<Enemy> = new FlxTypedGroup<Enemy>();
+            enemyList.forEach(function(e:Enemy) { if (e.alive) { newEnemyList.add(e); }} );
+            enemyList = newEnemyList;
         }
     }
     
