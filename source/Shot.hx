@@ -12,9 +12,13 @@ import flixel.util.FlxVector;
 class Shot extends FlxSprite
 {
 
-	public function new(X:Float=0, Y:Float=0, target : FlxPoint) 
+    private var damage : Float;
+	public function new(X:Float=0, Y:Float=0, target : FlxPoint, d:Float) 
 	{
 		super(X, Y);
+        
+        damage = d;
+        
 		makeGraphic(4, 4, FlxColorUtil.makeFromARGB(1.0, 250, 250, 250));
 		
 		var direction : FlxVector = new FlxVector(target.x - x, target.y - y);
@@ -41,6 +45,6 @@ class Shot extends FlxSprite
     
     public function getDamage ():Float 
     {
-        return 5;
+        return damage;
     }
 }

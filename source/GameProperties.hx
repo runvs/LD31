@@ -2,7 +2,7 @@ package ;
 
 /**
  * ...
- * @author ...
+ * @author ...  
  */
 class GameProperties
 {
@@ -13,10 +13,6 @@ class GameProperties
 	public static var EnemyMovementVelocityAdd : Float = 2.5;
 	public static var EnemyMovementVelocityDrag : Float = 0.98;
     public static var EnemyHealthDefault : Float  = 10;
-    
-    
-	
-	public static var PlayerShootDefaultTimer : Float = 0.5;
 	
 	public static var ShotMovementVelocity : Float = 500;
     

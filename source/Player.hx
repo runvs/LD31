@@ -15,13 +15,14 @@ class Player extends FlxSprite
 	// this is the position, the mouse is currently at.
 	private var targetPosition : FlxPoint;
 	
-	private var shootTimerCurrent : Float;
-	private var shootTimerMax : Float;
+
 	
 	private var healthCurrent : Float;
 	private var healtMax : Float;
     
     private var state:PlayState;
+    
+    private var weapon : Weapon;
 
 	
 	public function new(X:Float=0, Y:Float=0, playState:PlayState) 
@@ -31,11 +32,11 @@ class Player extends FlxSprite
         state = playState;
         
 		makeGraphic(24, 24, FlxColorUtil.makeFromARGB(1.0, 125, 255, 125));
-		
-		shootTimerCurrent = shootTimerMax = GameProperties.PlayerShootDefaultTimer;
-        
+
         healthCurrent = healtMax = GameProperties.PlayerHealthDefault;
 		
+        weapon = new Weapon();       
+        
 	}
 	
 	override public function update():Void 
@@ -43,17 +44,14 @@ class Player extends FlxSprite
 		super.update();
 		getInput();
 		doMovement();
-			
-
-		if (shootTimerCurrent >= 0)
-		{
-			shootTimerCurrent -= FlxG.elapsed;
-		}
+        
+        weapon.update();
 	}
 
 	public override function draw() :Void
 	{
 		super.draw();
+        weapon.draw();
 	}
 	
 	
@@ -95,19 +93,22 @@ class Player extends FlxSprite
 		
 		if (shot)
 		{
-			if (shootTimerCurrent < 0)
+			if (weapon.canShoot())
 			{
-				shootTimerCurrent = shootTimerMax;
-				//trace ("shoot");
                 shoot();
-			}
-		
+			}		
 		}
+        if (reload)
+        {
+            weapon.reload();
+        }
+
 	}
     
     private function shoot () : Void 
     {
-        var s: Shot  = new Shot(x + width/2, y + height/2, targetPosition);
+        var s: Shot  = new Shot(x + width / 2, y + height / 2, targetPosition, weapon.shoot());
+        
         state.spawnShot(s);
     }
     
