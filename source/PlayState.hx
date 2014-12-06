@@ -31,10 +31,8 @@ class PlayState extends FlxState
 	{
 		super.create();
 		player = new Player(125, 125, this);
-		add(player);
-		
+
 		enemyList = new FlxTypedGroup<Enemy>();
-		add(enemyList);
 		
 		spawner = new EnemySpawner(this);
 		add(spawner);
@@ -60,12 +58,20 @@ class PlayState extends FlxState
         
         cleanUp();
         
-        trace (shotList.length);
         
-        for (j in 0... shotList.length)
+        
+        player.update();
+        
+        for (j in 0 ... shotList.length)
 		{
             var s:Shot = shotList.members[j];
             s.update();
+        }
+        
+        for (j in 0 ... enemyList.length)
+        {
+            var e:Enemy = enemyList.members[j];
+            e.update();
         }
         
         doCollisions();
@@ -75,11 +81,22 @@ class PlayState extends FlxState
     override public function draw():Void
     {
         super.draw();
+        
+        player.draw();
+        
+        for (j in 0 ... enemyList.length)
+        {
+            var e:Enemy = enemyList.members[j];
+            e.draw();
+        }
+        
         for (j in 0... shotList.length)
 		{
             var s:Shot = shotList.members[j];
             s.draw();
         }
+        
+        player.drawHUD();
     }
     
     private function cleanUp():Void
