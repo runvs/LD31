@@ -12,6 +12,9 @@ import flixel.util.FlxTimer;
  */
 class Weapon extends FlxObject
 {
+    
+    
+    ///////////////////////////////////////////////////////////
 	public var shootTimerCurrent : Float;
 	public var shootTimerMax : Float;
     
@@ -24,9 +27,17 @@ class Weapon extends FlxObject
     public var ReloadTime : Float;// Reload Time in Seconds
     public var ReloadTimeFactor : Float ;   // smaller values improve reload time
     
+    public var ShotsFired : Int;    // shotgun eg 5
+    public var Spread : Float;  // in degree
+    ///////////////////////////////////////////////////////////
+    
+    
+    
+    
     private var reloadTimer :FlxTimer;
     
     private var reloadSign : FlxSprite;
+    private var outOfAmmoSign : FlxSprite;
     
     public function new() 
     {
@@ -40,10 +51,15 @@ class Weapon extends FlxObject
         
         ReloadTime = 1.5;
         ReloadTimeFactor = 1.0;
-        reloadTimer = new FlxTimer(0);
+        reloadTimer = new FlxTimer(0.1);
+        
+        ShotsFired = 1;
+        Spread = 0.5;
         
         reloadSign = new FlxSprite();
         reloadSign.makeGraphic(20, 20, FlxColorUtil.makeFromARGB(1.0, 125, 125, 255));
+        outOfAmmoSign = new FlxSprite();
+        outOfAmmoSign.makeGraphic(20,20, FlxColorUtil.makeFromARGB(1.0, 255, 100, 100));
     }
        
     
@@ -57,13 +73,25 @@ class Weapon extends FlxObject
     }
     override public function draw():Void
     {
-        if (!reloadTimer.finished)
+        if (AmmunitionCurrent <= 0)
         {
             var p :FlxPoint =  FlxG.mouse.getWorldPosition(FlxG.camera);
-            reloadSign.x = p.x;
-            reloadSign.y = p.y;
-            reloadSign.draw();
+            if (!reloadTimer.finished)
+            {
+                
+                reloadSign.x = p.x;
+                reloadSign.y = p.y;
+                reloadSign.draw();
+            }
+            else
+            {
+                outOfAmmoSign.x = p.x;
+                outOfAmmoSign.y = p.y;
+                outOfAmmoSign.draw();
+            }
         }
+        
+        
     }
     
     public function shoot() : Float

@@ -23,6 +23,8 @@ class Player extends FlxSprite
     private var state:PlayState;
     
     private var weapon : Weapon;
+    
+    private var weaponManager : WeaponManager;
 
 	
 	public function new(X:Float=0, Y:Float=0, playState:PlayState) 
@@ -35,7 +37,8 @@ class Player extends FlxSprite
 
         healthCurrent = healtMax = GameProperties.PlayerHealthDefault;
 		
-        weapon = new Weapon();       
+        weaponManager = new WeaponManager();
+        weapon = weaponManager.pistol;       
         
 	}
 	
