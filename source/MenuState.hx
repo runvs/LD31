@@ -35,5 +35,7 @@ class MenuState extends FlxState
 	override public function update():Void
 	{
 		super.update();
+		// TODO Play Intro/SplashScreen first
+		FlxG.switchState(new PlayState());
 	}	
 }
