@@ -23,6 +23,8 @@ class PlayState extends FlxState
     private var _shotList : FlxTypedGroup<Shot>;
 
     private var _backgroundSprite : FlxSprite;
+    private var _backgroundOverlay1 : FlxSprite;
+    private var _overlayList = [];
 
     /**
      * Function that is called up when to state is created to set it up. 
@@ -34,6 +36,15 @@ class PlayState extends FlxState
         
         _backgroundSprite = new FlxSprite();
         _backgroundSprite.loadGraphic(AssetPaths.background__png);
+        
+        _backgroundOverlay1 = new FlxSprite();
+        _backgroundOverlay1.loadGraphic(AssetPaths.backgroundOverlay1__png);
+        
+        // Create random positions for the overlays
+        for (i in 0...100)
+        {
+            _overlayList[i] = new FlxPoint(Std.random(1280), Std.random(720));
+        }
 
         _enemyList = new FlxTypedGroup<Enemy>();
         
@@ -99,6 +110,15 @@ class PlayState extends FlxState
             i += _backgroundSprite.width;
         }
         
+        // Draw background overlays
+        for (i in 0..._overlayList.length)
+        {
+            var p = _overlayList[i];
+            _backgroundOverlay1.x = p.x;
+            _backgroundOverlay1.y = p.y;
+            _backgroundOverlay1.draw();
+        }
+        
         _player.draw();
         
         for (j in 0 ... _enemyList.length)
@@ -119,7 +139,7 @@ class PlayState extends FlxState
     private function cleanUp():Void
     {
         var newShotList:FlxTypedGroup<Shot> = new FlxTypedGroup<Shot>();
-        _shotList.forEach(function(s:Shot) s.alive ? newShotList.add(s) : s.destroy() );
+        _shotList.forEach(function(s:Shot) { if (s.alive) { newShotList.add(s); } else { s.destroy(); } } );
         _shotList = newShotList;
         
         var newEnemyList:FlxTypedGroup<Enemy> = new FlxTypedGroup<Enemy>();
