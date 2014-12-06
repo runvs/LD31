@@ -14,15 +14,21 @@ class Player extends FlxSprite
 {
 	// this is the position, the mouse is currently at.
 	private var targetPosition : FlxPoint;
+	
 	private var shootTimerCurrent : Float;
 	private var shootTimerMax : Float;
+	
+	private var healthCurrent : Float;
+	private var healtMax : Float;
 
 	
 	public function new(X:Float=0, Y:Float=0) 
 	{
 		super(X, Y);
 		makeGraphic(24, 24, FlxColorUtil.makeFromARGB(1.0, 125, 255, 125));
+		
 		shootTimerCurrent = shootTimerMax = GameProperties.PlayerShootDefaultTimer;
+		
 	}
 	
 	override public function update():Void 

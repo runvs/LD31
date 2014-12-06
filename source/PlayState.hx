@@ -3,6 +3,7 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.group.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
@@ -14,6 +15,7 @@ class PlayState extends FlxState
 {
 	
 	private var player: Player;
+	private var enemyList : FlxTypedGroup<Enemy>;
 	/**
 	 * Function that is called up when to state is created to set it up. 
 	 */
@@ -22,6 +24,9 @@ class PlayState extends FlxState
 		super.create();
 		player = new Player(125, 125);
 		add(player);
+		
+		enemyList = new FlxTypedGroup<Enemy>();
+		add(enemyList);
 	}
 	
 	/**
@@ -40,4 +45,5 @@ class PlayState extends FlxState
 	{
 		super.update();
 	}	
+	
 }
