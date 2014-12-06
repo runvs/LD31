@@ -13,7 +13,7 @@ class Shot extends FlxSprite
 {
 
     private var damage : Float;
-	public function new(X:Float=0, Y:Float=0, target : FlxPoint, d:Float) 
+	public function new(X:Float=0, Y:Float=0, target : FlxPoint, d:Float, velo:Float) 
 	{
 		super(X, Y);
         
@@ -23,8 +23,8 @@ class Shot extends FlxSprite
 		
 		var direction : FlxVector = new FlxVector(target.x - x, target.y - y);
 		direction.normalize();
-		velocity.x = direction.x * GameProperties.ShotMovementVelocity;
-		velocity.y = direction.y * GameProperties.ShotMovementVelocity;
+		velocity.x = direction.x * velo;
+		velocity.y = direction.y * velo;
         alive = true;
 	}
 	

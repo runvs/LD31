@@ -31,6 +31,8 @@ class Weapon extends FlxObject
     
     public var ShotsFired : Int;    // shotgun eg 5
     public var Spread : Float;  // in degree
+    
+    public var ShotSpeed : Float;
     ///////////////////////////////////////////////////////////
     
     
@@ -57,6 +59,8 @@ class Weapon extends FlxObject
         
         ShotsFired = 1;
         Spread = 0.5;
+        
+        ShotSpeed = 400;
         
         reloadSign = new FlxSprite();
         reloadSign.makeGraphic(20, 20, FlxColorUtil.makeFromARGB(1.0, 125, 125, 255));

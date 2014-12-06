@@ -17,6 +17,8 @@ class WeaponManager
         pistol.ReloadTime = 1.5;// Reload Time in Seconds
         pistol.ShotsFired = 1;
         pistol.Spread = 2.0;
+        pistol.ShotSpeed = 400;
+        pistol.reload();
         
         machinegun = new Weapon();
         machinegun.shootTimerMax  = 0.1;
@@ -24,8 +26,9 @@ class WeaponManager
         machinegun.DamageBase = 2;
         machinegun.ReloadTime = 3.5;// Reload Time in Seconds
         machinegun.ShotsFired = 1;
-        machinegun.Spread = 10.0;
-        
+        machinegun.Spread = 3.0;
+        machinegun.ShotSpeed = 600;
+        machinegun.reload();
     }
     
     public var pistol : Weapon;

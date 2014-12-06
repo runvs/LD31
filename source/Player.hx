@@ -115,7 +115,7 @@ class Player extends FlxSprite
         
         var s: Shot  = new Shot(startX, startY, 
                                 weapon.calculateWeaponSpread(startX, startY, targetPosition), 
-                                weapon.shoot());
+                                weapon.shoot(), weapon.ShotSpeed);
         
         state.spawnShot(s);
     }
