@@ -20,6 +20,8 @@ class PlayState extends FlxState
 	private var enemyList : FlxTypedGroup<Enemy>;
 	private var spawner : EnemySpawner;
 	
+	private var shotList : FlxTypedGroup<Shot>;
+	
 	
 	
 	/**
@@ -28,7 +30,7 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		super.create();
-		player = new Player(125, 125);
+		player = new Player(125, 125, this);
 		add(player);
 		
 		enemyList = new FlxTypedGroup<Enemy>();
@@ -36,6 +38,9 @@ class PlayState extends FlxState
 		
 		spawner = new EnemySpawner(this);
 		add(spawner);
+        
+		shotList = new FlxTypedGroup<Shot>();
+        add(shotList);
 	}
 	
 	/**
@@ -53,7 +58,66 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		super.update();
+        
+        cleanUp();
+        
+        doCollisions();
+        
 	}	
+    
+    private function cleanUp():Void
+    {
+        // TODO!!!
+        //{
+		//	var newShotList:FlxTypedGroup<Shot> = new FlxTypedGroup<Shot>();
+		//	shotList.forEach(function(s:Shot) { if (s.alive) newShotList.add(s); else s.destroy(); } );
+        //    shotList = newShotList;
+		//}
+        
+        {
+            enemyList.forEach(function(e:Enemy) { if (!e.alive) { e.destroy(); }} );
+        }
+    }
+    
+    private function doCollisions ():Void
+    {
+        for (j in 0... shotList.length)
+		{
+            var s:Shot = shotList.members[j];
+			if (s.alive && s.exists )
+			{
+                for (i in 0...enemyList.length)
+                {
+                    var e:Enemy = enemyList.members[i];
+                    if (!(e.alive && e.exists))
+                    {
+                        continue;
+                    }
+                    if (FlxG.overlap(e, s))
+                    {
+                        //if (FlxG.pixelPerfectOverlap(e, s,1))
+                        {
+                            shotEnemyCollision(e, s);
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+    
+    public function shotEnemyCollision (e:Enemy, s:Shot):Void
+	{
+        //addExplosion(new Explosion(s.sprite.x - 4, s.sprite.y - 6, true));
+        s.deleteObject();
+		e.takeDamage(s.getDamage());
+	}
+
+    
+    public function spawnShot(s:Shot) : Void
+    {
+        shotList.add(s);
+    }
 	
 	public function spawnEnemy(e:Enemy) : Void
 	{

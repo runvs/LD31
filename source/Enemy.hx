@@ -32,21 +32,26 @@ class Enemy extends FlxSprite
 		
 		makeGraphic(24, 24, FlxColorUtil.makeFromARGB(1.0, 255, 125, 125));
 		targetPosition = new FlxPoint();
+        
+        healthCurrent = healtMax = GameProperties.EnemyHealthDefault;
 		
 	}
 	
 	override public function update():Void 
 	{
-		super.update();
-		getInput();
-		doMovement();
-		
-		targetPosition = state.getPlayerPosition();
-			
-		if (shootTimerCurrent >= 0)
-		{
-			shootTimerCurrent -= FlxG.elapsed;
-		}
+        if (alive)
+        {
+            super.update();
+            getInput();
+            doMovement();
+            
+            targetPosition = state.getPlayerPosition();
+                
+            if (shootTimerCurrent >= 0)
+            {
+                shootTimerCurrent -= FlxG.elapsed;
+            }
+        }
 	}
 	
 	public override function draw() :Void
@@ -72,7 +77,20 @@ class Enemy extends FlxSprite
 		
 		velocity.x += dir.x * GameProperties.EnemyMovementVelocityAdd;
 		velocity.y += dir.y * GameProperties.EnemyMovementVelocityAdd;
-		
 	}
+    
+    public function takeDamage (damage:Float)
+    {
+        healthCurrent -= damage;
+        checkDead();
+    }
+    
+    public function checkDead() : Void
+    {
+        if (healthCurrent <= 0)
+        {
+            alive = false;
+        }
+    }
 	
 }

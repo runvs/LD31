@@ -20,14 +20,21 @@ class Player extends FlxSprite
 	
 	private var healthCurrent : Float;
 	private var healtMax : Float;
+    
+    private var state:PlayState;
 
 	
-	public function new(X:Float=0, Y:Float=0) 
+	public function new(X:Float=0, Y:Float=0, playState:PlayState) 
 	{
 		super(X, Y);
+        
+        state = playState;
+        
 		makeGraphic(24, 24, FlxColorUtil.makeFromARGB(1.0, 125, 255, 125));
 		
 		shootTimerCurrent = shootTimerMax = GameProperties.PlayerShootDefaultTimer;
+        
+        healthCurrent = healtMax = GameProperties.PlayerHealthDefault;
 		
 	}
 	
@@ -91,11 +98,19 @@ class Player extends FlxSprite
 			if (shootTimerCurrent < 0)
 			{
 				shootTimerCurrent = shootTimerMax;
-				trace ("shoot");
+				//trace ("shoot");
+                shoot();
 			}
 		
 		}
 	}
+    
+    private function shoot () : Void 
+    {
+        var s: Shot  = new Shot(x + width/2, y + height/2, targetPosition);
+        state.spawnShot(s);
+    }
+    
 	
 	private function doMovement() : Void
 	{
