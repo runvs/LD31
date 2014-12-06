@@ -7,6 +7,7 @@ import flixel.group.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
+import flixel.util.FlxPoint;
 
 /**
  * A FlxState which can be used for the actual gameplay.
@@ -15,7 +16,12 @@ class PlayState extends FlxState
 {
 	
 	private var player: Player;
+	
 	private var enemyList : FlxTypedGroup<Enemy>;
+	private var spawner : EnemySpawner;
+	
+	
+	
 	/**
 	 * Function that is called up when to state is created to set it up. 
 	 */
@@ -27,6 +33,9 @@ class PlayState extends FlxState
 		
 		enemyList = new FlxTypedGroup<Enemy>();
 		add(enemyList);
+		
+		spawner = new EnemySpawner(this);
+		add(spawner);
 	}
 	
 	/**
@@ -46,4 +55,14 @@ class PlayState extends FlxState
 		super.update();
 	}	
 	
+	public function spawnEnemy(e:Enemy) : Void
+	{
+		enemyList.add(e);
+	}
+	
+	public function getPlayerPosition () : FlxPoint
+	{
+		var p :FlxPoint = new FlxPoint(player.x, player.y);
+		return p;
+	}
 }

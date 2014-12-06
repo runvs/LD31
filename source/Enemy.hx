@@ -22,11 +22,16 @@ class Enemy extends FlxSprite
 	private var shootTimerCurrent :Float;
 	private var shootTimerMax :Float;
 	
-	public function new(X:Float=0, Y:Float=0) 
+	private var state : PlayState;
+	
+	public function new(X:Float=0, Y:Float=0, playstate:PlayState) 
 	{
 		super(X, Y);
 		
+		state = playstate;
+		
 		makeGraphic(24, 24, FlxColorUtil.makeFromARGB(1.0, 255, 125, 125));
+		targetPosition = new FlxPoint();
 		
 	}
 	
@@ -35,6 +40,8 @@ class Enemy extends FlxSprite
 		super.update();
 		getInput();
 		doMovement();
+		
+		targetPosition = state.getPlayerPosition();
 			
 		if (shootTimerCurrent >= 0)
 		{
@@ -53,13 +60,19 @@ class Enemy extends FlxSprite
 	}
 	private function doMovement() :Void
 	{
-		velocity.x *= GameProperties.PlayerMovementVelocityDrag;
-        velocity.y *= GameProperties.PlayerMovementVelocityDrag;
+		velocity.x *= GameProperties.EnemyMovementVelocityDrag;
+        velocity.y *= GameProperties.EnemyMovementVelocityDrag;
 		
 		// turning stuff
 		
 		var dir : FlxVector = new FlxVector( targetPosition.x - x, targetPosition.y - y );
 		angle = dir.degrees;
+		
+		dir.normalize();
+		
+		velocity.x += dir.x * GameProperties.EnemyMovementVelocityAdd;
+		velocity.y += dir.y * GameProperties.EnemyMovementVelocityAdd;
+		
 	}
 	
 }
