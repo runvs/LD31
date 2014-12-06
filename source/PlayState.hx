@@ -171,9 +171,6 @@ class PlayState extends FlxState
     
     public function shotEnemyCollision (e:Enemy, s:Shot):Void
 	{
-        //addExplosion(new Explosion(s.sprite.x - 4, s.sprite.y - 6, true));
-
-        
         
         var push = s.push();
 		e.velocity.x += push.x;

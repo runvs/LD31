@@ -46,6 +46,10 @@ class Pickup extends FlxSprite
         {
             loadGraphic(AssetPaths.pickup_microwavegun__png, false, 32, 32);
         }
+        else
+        {
+            throw "could not determine pickup type. BAM!";
+        }
         
         var t : FlxTimer  = new FlxTimer(GameProperties.PickupLifeTime, switchToFade);
         numberOfRemainingFlashLoops = 4;

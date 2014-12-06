@@ -6,6 +6,8 @@ import flixel.util.FlxColorUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxVector;
 
+using flixel.util.FlxSpriteUtil;
+
 /**
  * ...
  * @author ...
@@ -169,6 +171,16 @@ class Player extends FlxSprite
         {
             weapon = weaponManager.microwavegun;
         }
+        else if (type == PickupType.PickupHeal)
+        {
+            healfull();
+        }
+    }
+    
+    private function healfull():Void
+    {
+        FlxG.camera.flash(FlxColorUtil.makeFromARGB(0.25, 189, 221, 184), 0.5);
+        healthCurrent = healtMax;
     }
 	
 }

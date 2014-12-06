@@ -11,4 +11,8 @@ enum PickupType
     PickupWeaponShotgun;
     PickupWeaponMicrowavegun;
     
+    PickupHeal;
+    PickupShield;
+    PickupFirerate;
+    
 }
