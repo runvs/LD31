@@ -54,8 +54,13 @@ class Player extends FlxSprite
 	public override function draw() :Void
 	{
 		super.draw();
-        weapon.draw();
+        
 	}
+    
+    public function drawHUD():Void
+    {
+        weapon.draw();
+    }
 	
 	
 	private function getInput() :Void

@@ -108,7 +108,9 @@ class PlayState extends FlxState
 		}
         
         {
-            enemyList.forEach(function(e:Enemy) { if (!e.alive) { e.destroy(); }} );
+            var newEnemyList:FlxTypedGroup<Enemy> = new FlxTypedGroup<Enemy>();
+            enemyList.forEach(function(e:Enemy) { if (e.alive) { newEnemyList.add(e); }} );
+            enemyList = newEnemyList;
         }
     }
     
