@@ -40,7 +40,6 @@ class PlayState extends FlxState
 		add(spawner);
         
 		shotList = new FlxTypedGroup<Shot>();
-        add(shotList);
 	}
 	
 	/**
@@ -61,18 +60,35 @@ class PlayState extends FlxState
         
         cleanUp();
         
+        trace (shotList.length);
+        
+        for (j in 0... shotList.length)
+		{
+            var s:Shot = shotList.members[j];
+            s.update();
+        }
+        
         doCollisions();
         
 	}	
     
+    override public function draw():Void
+    {
+        super.draw();
+        for (j in 0... shotList.length)
+		{
+            var s:Shot = shotList.members[j];
+            s.draw();
+        }
+    }
+    
     private function cleanUp():Void
     {
-        // TODO!!!
-        //{
-		//	var newShotList:FlxTypedGroup<Shot> = new FlxTypedGroup<Shot>();
-		//	shotList.forEach(function(s:Shot) { if (s.alive) newShotList.add(s); else s.destroy(); } );
-        //    shotList = newShotList;
-		//}
+        {
+			var newShotList:FlxTypedGroup<Shot> = new FlxTypedGroup<Shot>();
+			shotList.forEach(function(s:Shot) { if (s.alive) newShotList.add(s); else s.destroy(); } );
+            shotList = newShotList;
+		}
         
         {
             enemyList.forEach(function(e:Enemy) { if (!e.alive) { e.destroy(); }} );
