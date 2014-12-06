@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
+import flixel.util.FlxTimer;
 
 /**
  * ...
@@ -14,6 +15,7 @@ class EnemySpawner extends FlxObject
 	
 	private var state : PlayState;
 	private var spawnTimerCurrent : Float; // counting up
+    private var currentMaxEnemies : Int;
 		
 	public function new(playstate:PlayState) 
 	{
@@ -23,6 +25,8 @@ class EnemySpawner extends FlxObject
 		spawnEnemy();
         
         spawnTimerCurrent = 0;
+        currentMaxEnemies = 2;
+        var t :FlxTimer  = new FlxTimer(5, increaseMaxEnemyNumber, 0);
 		
 	}
 	
@@ -41,8 +45,12 @@ class EnemySpawner extends FlxObject
     
     private function getSpawnTime():Float
     {
-        // TODO Implement CombatDirector!
-        return 2.5;
+        
+        var currentEnemies : Float = state.getNumberOfEnemies();
+        var exponent : Float = GameProperties.EnemySpawnerExponent;
+        var retval : Float = (Math.pow(currentEnemies / currentMaxEnemies, exponent)) * GameProperties.EnemySpawnerMaxTime;
+        return retval;
+
     }
     
 	
@@ -87,7 +95,12 @@ class EnemySpawner extends FlxObject
 		
 		state.spawnEnemy(e);
 	}
-	
+    
+    public function increaseMaxEnemyNumber (t:FlxTimer) :Void
+    {
+        currentMaxEnemies += 1;
+        trace ("increase enemies");
+    }
 	
 	
 }

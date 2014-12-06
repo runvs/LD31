@@ -14,6 +14,10 @@ class GameProperties
 	public static var EnemyMovementVelocityDrag : Float = 0.98;
     public static var EnemyHealthDefault : Float  = 10;
     
+    public static var EnemySpawnerExponent : Float = 2.5;
+    public static var EnemySpawnerMaxTime : Float = 4.5;
+    
+    
     public static var SpawnerOutScreenOffset : Float = 100;
     
     public static var PickupDropProbability : Float = 0.1;  

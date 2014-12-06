@@ -41,12 +41,13 @@ class Shot extends FlxSprite
         
         if (type == ShotType.Bullet)
         {
-            makeGraphic(4, 4, FlxColorUtil.makeFromARGB(1.0, 250, 250, 250));	
+            //makeGraphic(4, 4, FlxColorUtil.makeFromARGB(1.0, 250, 250, 250));	
+            loadGraphic(AssetPaths.shot_bullet__png, false, 24, 6);
         }
 		else if (type == ShotType.Microwave)
         {
             lifetime = 4;
-            makeGraphic(4, 8, FlxColorUtil.makeFromARGB(1.0, 250, 25, 250));
+            loadGraphic(AssetPaths.shot_microwave__png, false, 3, 8);
             FlxTween.tween(this.scale, { x:1.5, y:3.5 }, 2);
             FlxTween.tween(this, {alpha:0}, 2, {complete:deleteFromTween});
         }

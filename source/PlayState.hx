@@ -234,4 +234,9 @@ class PlayState extends FlxState
         var p :FlxPoint = new FlxPoint(_player.x, _player.y);
         return p;
     }
+    
+    public function getNumberOfEnemies () : Int 
+    {
+        return _enemyList.length;
+    }
 }

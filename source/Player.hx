@@ -44,7 +44,7 @@ class Player extends FlxSprite
         healthCurrent = healtMax = GameProperties.PlayerHealthDefault;
 		
         weaponManager = new WeaponManager();
-        weapon = weaponManager.machinegun;       
+        weapon = weaponManager.microwavegun;       
         
 	}
 	
