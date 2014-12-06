@@ -46,6 +46,18 @@ class Pickup extends FlxSprite
         {
             loadGraphic(AssetPaths.pickup_microwavegun__png, false, 32, 32);
         }
+        else if  (type == PickupType.PickupHeal)
+        {
+            loadGraphic(AssetPaths.pickup_heal__png, false, 32, 32);
+        }
+        else if  (type == PickupType.PickupFirerate)
+        {
+            loadGraphic(AssetPaths.pickup_firerate__png, false, 32, 32);
+        }
+        else if  (type == PickupType.PickupShield)
+        {
+            loadGraphic(AssetPaths.pickup_shield__png, false, 32, 32);
+        }
         else
         {
             throw "could not determine pickup type. BAM!";

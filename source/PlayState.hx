@@ -21,6 +21,7 @@ class PlayState extends FlxState
     private var _spawner : EnemySpawner;
 
     private var _shotList : FlxTypedGroup<Shot>;
+    private var _pickupList : FlxTypedGroup<Pickup>;
 
     private var _backgroundSprite : FlxSprite;
     private var _backgroundOverlay1 : FlxSprite;
@@ -52,6 +53,8 @@ class PlayState extends FlxState
         add(_spawner);
         
         _shotList = new FlxTypedGroup<Shot>();
+        
+        _pickupList = new FlxTypedGroup<Pickup>();
     }
 
     /**
@@ -79,6 +82,19 @@ class PlayState extends FlxState
             var s:Shot = _shotList.members[j];
             s.update();
         }
+        for (j in 0 ... _pickupList.length)
+        {
+            var p:Pickup = _pickupList.members[j];
+            p.update();
+            
+            if (FlxG.overlap(p, _player))
+            {
+                _player.pickUp(p.type);
+                p.alive = false;
+                p.exists = false;
+            }
+        }
+        
         
         for (j in 0 ... _enemyList.length)
         {
@@ -126,7 +142,11 @@ class PlayState extends FlxState
             var e:Enemy = _enemyList.members[j];
             e.draw();
         }
-        
+        for (j in 0 ... _pickupList.length)
+        {
+            var p:Pickup = _pickupList.members[j];
+            p.draw();
+        }
         for (j in 0... _shotList.length)
         {
             var s:Shot = _shotList.members[j];
@@ -138,13 +158,21 @@ class PlayState extends FlxState
 
     private function cleanUp():Void
     {
-        var newShotList:FlxTypedGroup<Shot> = new FlxTypedGroup<Shot>();
-        _shotList.forEach(function(s:Shot) { if (s.alive) { newShotList.add(s); } else { s.destroy(); } } );
-        _shotList = newShotList;
-        
-        var newEnemyList:FlxTypedGroup<Enemy> = new FlxTypedGroup<Enemy>();
-        _enemyList.forEach(function(e:Enemy) { if (e.alive) { newEnemyList.add(e); }} );
-        _enemyList = newEnemyList;
+        {
+            var newShotList:FlxTypedGroup<Shot> = new FlxTypedGroup<Shot>();
+            _shotList.forEach(function(s:Shot) { if (s.alive) { newShotList.add(s); } else { s.destroy(); } } );
+            _shotList = newShotList;
+        }
+        {
+            var newEnemyList:FlxTypedGroup<Enemy> = new FlxTypedGroup<Enemy>();
+            _enemyList.forEach(function(e:Enemy) { if (e.alive) { newEnemyList.add(e); }} );
+            _enemyList = newEnemyList;
+        }
+        {
+           var newPickupList :FlxTypedGroup<Pickup> = new FlxTypedGroup<Pickup>();
+           _pickupList.forEach(function(p:Pickup) { if (p.alive) { newPickupList.add(p); }} );
+            _pickupList = newPickupList;
+        }
     }
 
     private function doCollisions ():Void
@@ -196,6 +224,11 @@ class PlayState extends FlxState
         _enemyList.add(e);
     }
 
+    public function spawnPickup(p:Pickup) :Void
+    {
+        _pickupList.add(p);
+    }
+    
     public function getPlayerPosition () : FlxPoint
     {
         var p :FlxPoint = new FlxPoint(_player.x, _player.y);
