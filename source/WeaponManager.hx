@@ -18,8 +18,17 @@ class WeaponManager
         pistol.ShotsFired = 1;
         pistol.Spread = 2.0;
         
+        machinegun = new Weapon();
+        machinegun.shootTimerMax  = 0.1;
+        machinegun.AmminutionMax  = 30;
+        machinegun.DamageBase = 2;
+        machinegun.ReloadTime = 3.5;// Reload Time in Seconds
+        machinegun.ShotsFired = 1;
+        machinegun.Spread = 10.0;
+        
     }
     
     public var pistol : Weapon;
+    public var machinegun : Weapon;
     
 }

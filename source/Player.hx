@@ -38,7 +38,7 @@ class Player extends FlxSprite
         healthCurrent = healtMax = GameProperties.PlayerHealthDefault;
 		
         weaponManager = new WeaponManager();
-        weapon = weaponManager.pistol;       
+        weapon = weaponManager.machinegun;       
         
 	}
 	
@@ -110,7 +110,12 @@ class Player extends FlxSprite
     
     private function shoot () : Void 
     {
-        var s: Shot  = new Shot(x + width / 2, y + height / 2, targetPosition, weapon.shoot());
+        var startX : Float = x + width / 2;
+        var startY :Float  = y + height / 2;
+        
+        var s: Shot  = new Shot(startX, startY, 
+                                weapon.calculateWeaponSpread(startX, startY, targetPosition), 
+                                weapon.shoot());
         
         state.spawnShot(s);
     }
@@ -123,6 +128,7 @@ class Player extends FlxSprite
 		
 		// turning stuff
 		var dir :FlxVector = new FlxVector( targetPosition.x - x, targetPosition.y - y );
+        
 		angle = dir.degrees;
 	}
 	

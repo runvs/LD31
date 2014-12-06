@@ -4,7 +4,9 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.util.FlxColorUtil;
 import flixel.util.FlxPoint;
+import flixel.util.FlxRandom;
 import flixel.util.FlxTimer;
+import flixel.util.FlxVector;
 
 /**
  * ...
@@ -125,6 +127,18 @@ class Weapon extends FlxObject
     public function doReload(t:FlxTimer) : Void
     {
         AmmunitionCurrent = AmminutionMax;
+    }
+    
+    public function calculateWeaponSpread (startX: Float, startY: Float , target:FlxPoint):FlxPoint
+    {
+        var retval :FlxPoint = new FlxPoint();
+        var v : FlxVector = new FlxVector(target.x - startX, target.y - startY);
+        var deflection = FlxRandom.floatRanged( -Spread, Spread);
+        v = v.rotateByDegrees(deflection);
+        
+        retval.x = v.x + startX;
+        retval.y = v.y + startY;
+        return retval;
     }
     
 }
