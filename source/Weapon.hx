@@ -100,10 +100,13 @@ class Weapon extends FlxObject
         
     }
     
-    public function shoot() : Float
+    public function shoot(multipleShot:Bool = false) : Float
     {
-        AmmunitionCurrent -= 1;
-        shootTimerCurrent = shootTimerMax;
+        if (!multipleShot)
+        {
+            AmmunitionCurrent -= 1;
+            shootTimerCurrent = shootTimerMax;
+        }
         return getDamage();
     }
         

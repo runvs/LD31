@@ -12,7 +12,7 @@ class WeaponManager
     {
         pistol = new Weapon();
         pistol.shootTimerMax  = 0.6;
-        pistol.AmminutionMax  = 6;
+        pistol.AmminutionMax  = 12;
         pistol.DamageBase = 4;
         pistol.ReloadTime = 1.5;// Reload Time in Seconds
         pistol.ShotsFired = 1;
@@ -29,9 +29,20 @@ class WeaponManager
         machinegun.Spread = 3.0;
         machinegun.ShotSpeed = 600;
         machinegun.reload();
+        
+        shotgun = new Weapon();
+        shotgun.shootTimerMax  = 0.8;
+        shotgun.AmminutionMax  = 6;
+        shotgun.DamageBase = 3;
+        shotgun.ReloadTime = 3.5;// Reload Time in Seconds
+        shotgun.ShotsFired = 5;
+        shotgun.Spread = 10.0;
+        shotgun.ShotSpeed = 500;
+        shotgun.reload();
     }
     
     public var pistol : Weapon;
     public var machinegun : Weapon;
+    public var shotgun: Weapon;
     
 }

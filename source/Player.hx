@@ -38,7 +38,7 @@ class Player extends FlxSprite
         healthCurrent = healtMax = GameProperties.PlayerHealthDefault;
 		
         weaponManager = new WeaponManager();
-        weapon = weaponManager.machinegun;       
+        weapon = weaponManager.shotgun;       
         
 	}
 	
@@ -116,8 +116,14 @@ class Player extends FlxSprite
         var s: Shot  = new Shot(startX, startY, 
                                 weapon.calculateWeaponSpread(startX, startY, targetPosition), 
                                 weapon.shoot(), weapon.ShotSpeed);
-        
         state.spawnShot(s);
+        for (i in 1 ... weapon.ShotsFired)
+        {
+            s = new Shot(startX, startY, 
+                        weapon.calculateWeaponSpread(startX, startY, targetPosition), 
+                        weapon.shoot(true), weapon.ShotSpeed);
+            state.spawnShot(s);
+        }
     }
     
 	
