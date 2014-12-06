@@ -144,7 +144,14 @@ class PlayState extends FlxState
 	{
         //addExplosion(new Explosion(s.sprite.x - 4, s.sprite.y - 6, true));
         s.deleteObject();
-		e.takeDamage(s.getDamage());
+        
+        
+        var push = s.push();
+		e.velocity.x += push.x;
+        e.velocity.y += push.y;
+        
+        e.takeDamage(s.getDamage());
+        
 	}
 
     
