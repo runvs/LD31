@@ -14,145 +14,149 @@ import flixel.util.FlxPoint;
  */
 class PlayState extends FlxState
 {
-	
-	private var player: Player;
-	
-	private var enemyList : FlxTypedGroup<Enemy>;
-	private var spawner : EnemySpawner;
-	
-	private var shotList : FlxTypedGroup<Shot>;
-    
-    private var pickupList :FlxTypedGroup<Pickup>;
-	
-	
-	
-	/**
-	 * Function that is called up when to state is created to set it up. 
-	 */
-	override public function create():Void
-	{
-		super.create();
-		player = new Player(125, 125, this);
 
-		enemyList = new FlxTypedGroup<Enemy>();
-		
-		spawner = new EnemySpawner(this);
-		add(spawner);
-        
-		shotList = new FlxTypedGroup<Shot>();
-        
-        pickupList = new FlxTypedGroup<Pickup>();
-	}
-	
-	/**
-	 * Function that is called when this state is destroyed - you might want to 
-	 * consider setting all objects this state uses to null to help garbage collection.
-	 */
-	override public function destroy():Void
-	{
-		super.destroy();
-	}
+    private var _player: Player;
 
-	/**
-	 * Function that is called once every frame.
-	 */
-	override public function update():Void
-	{
-		super.update();
+    private var _enemyList : FlxTypedGroup<Enemy>;
+    private var _spawner : EnemySpawner;
+
+    private var _shotList : FlxTypedGroup<Shot>;
+
+    private var _backgroundSprite : FlxSprite;
+    private var _backgroundOverlay1 : FlxSprite;
+    private var _overlayList = [];
+
+    /**
+     * Function that is called up when to state is created to set it up. 
+     */
+    override public function create():Void
+    {
+        super.create();
+        _player = new Player(125, 125, this);
+        
+        _backgroundSprite = new FlxSprite();
+        _backgroundSprite.loadGraphic(AssetPaths.background__png);
+        
+        _backgroundOverlay1 = new FlxSprite();
+        _backgroundOverlay1.loadGraphic(AssetPaths.backgroundOverlay1__png);
+        
+        // Create random positions for the overlays
+        for (i in 0...100)
+        {
+            _overlayList[i] = new FlxPoint(Std.random(1280), Std.random(720));
+        }
+
+        _enemyList = new FlxTypedGroup<Enemy>();
+        
+        _spawner = new EnemySpawner(this);
+        add(_spawner);
+        
+        _shotList = new FlxTypedGroup<Shot>();
+    }
+
+    /**
+     * Function that is called when this state is destroyed - you might want to 
+     * consider setting all objects this state uses to null to help garbage collection.
+     */
+    override public function destroy():Void
+    {
+        super.destroy();
+    }
+
+    /**
+     * Function that is called once every frame.
+     */
+    override public function update():Void
+    {
+        super.update();
         
         cleanUp();
         
+        _player.update();
         
-        
-        player.update();
-        
-        for (j in 0 ... shotList.length)
-		{
-            var s:Shot = shotList.members[j];
+        for (j in 0 ... _shotList.length)
+        {
+            var s:Shot = _shotList.members[j];
             s.update();
         }
         
-        for (j in 0 ... enemyList.length)
+        for (j in 0 ... _enemyList.length)
         {
-            var e:Enemy = enemyList.members[j];
+            var e:Enemy = _enemyList.members[j];
             e.update();
-        }
-        for (j in 0 ... pickupList.length)
-        {
-            var p:Pickup = pickupList.members[j];
-            p.update();
-            
-            if (FlxG.overlap(p, player))
-            {
-                player.pickUp(p.type);
-                p.alive = p.exists = false;
-            }
         }
         
         doCollisions();
-        
-	}	
-    
+    }
+
     override public function draw():Void
     {
         super.draw();
         
-        player.draw();
-        
-        for (j in 0 ... enemyList.length)
+        // Draw background sprites
+        var i = 0.0;
+        while (i <= 1280)
         {
-            var e:Enemy = enemyList.members[j];
+            var j = 0.0;
+            while (j <= 720)
+            {
+                _backgroundSprite.x = i;
+                _backgroundSprite.y = j;
+                _backgroundSprite.draw();
+                
+                j += _backgroundSprite.height;
+            }
+            
+            i += _backgroundSprite.width;
+        }
+        
+        // Draw background overlays
+        for (i in 0..._overlayList.length)
+        {
+            var p = _overlayList[i];
+            _backgroundOverlay1.x = p.x;
+            _backgroundOverlay1.y = p.y;
+            _backgroundOverlay1.draw();
+        }
+        
+        _player.draw();
+        
+        for (j in 0 ... _enemyList.length)
+        {
+            var e:Enemy = _enemyList.members[j];
             e.draw();
         }
         
-        for (j in 0... pickupList.length)
-		{
-            var p:Pickup= pickupList.members[j];
-            p.draw();
-        }
-        
-        for (j in 0... shotList.length)
-		{
-            var s:Shot = shotList.members[j];
+        for (j in 0... _shotList.length)
+        {
+            var s:Shot = _shotList.members[j];
             s.draw();
         }
         
-        
-        
-        player.drawHUD();
+        _player.drawHUD();
     }
-    
+
     private function cleanUp():Void
     {
-        {
-			var newShotList:FlxTypedGroup<Shot> = new FlxTypedGroup<Shot>();
-			shotList.forEach(function(s:Shot) { if (s.alive) newShotList.add(s); else s.destroy(); } );
-            shotList = newShotList;
-		}
+        var newShotList:FlxTypedGroup<Shot> = new FlxTypedGroup<Shot>();
+        _shotList.forEach(function(s:Shot) { if (s.alive) { newShotList.add(s); } else { s.destroy(); } } );
+        _shotList = newShotList;
         
-        {
-            var newEnemyList:FlxTypedGroup<Enemy> = new FlxTypedGroup<Enemy>();
-            enemyList.forEach(function(e:Enemy) { if (e.alive) { newEnemyList.add(e); }} );
-            enemyList = newEnemyList;
-        }
-        
-         {
-            var newPickupList:FlxTypedGroup<Pickup> = new FlxTypedGroup<Pickup>();
-            pickupList.forEach(function(p:Pickup) { if (p.alive) { newPickupList.add(p); }} );
-            pickupList = newPickupList;
-        }
+        var newEnemyList:FlxTypedGroup<Enemy> = new FlxTypedGroup<Enemy>();
+        _enemyList.forEach(function(e:Enemy) { if (e.alive) { newEnemyList.add(e); }} );
+        _enemyList = newEnemyList;
     }
-    
+
     private function doCollisions ():Void
     {
-        for (j in 0... shotList.length)
-		{
-            var s:Shot = shotList.members[j];
-			if (s.alive && s.exists )
-			{
-                for (i in 0...enemyList.length)
+        for (j in 0... _shotList.length)
+        {
+            var s:Shot = _shotList.members[j];
+            if (s.alive && s.exists )
+            {
+                for (i in 0..._enemyList.length)
                 {
-                    var e:Enemy = enemyList.members[i];
+                    var e:Enemy = _enemyList.members[i];
                     if (!(e.alive && e.exists))
                     {
                         continue;
@@ -168,39 +172,33 @@ class PlayState extends FlxState
             }
         }
     }
-    
+
     public function shotEnemyCollision (e:Enemy, s:Shot):Void
-	{
+    {
+        //addExplosion(new Explosion(s.sprite.x - 4, s.sprite.y - 6, true));
+        s.deleteObject();
         
         var push = s.push();
-		e.velocity.x += push.x;
+        e.velocity.x += push.x;
         e.velocity.y += push.y;
         
         e.takeDamage(s.getDamage());
-        s.deleteObject();
-	}
+    }
 
-    
+
     public function spawnShot(s:Shot) : Void
     {
-        shotList.add(s);
+        _shotList.add(s);
     }
-	
-	public function spawnEnemy(e:Enemy) : Void
-	{
-		enemyList.add(e);
-	}
-        
-    public function spawnPickup (p:Pickup) : Void
-    {
-        pickupList.add(p);
-    }
-	
-	public function getPlayerPosition () : FlxPoint
-	{
-		var p :FlxPoint = new FlxPoint(player.x, player.y);
-		return p;
-	}
 
-    
+    public function spawnEnemy(e:Enemy) : Void
+    {
+        _enemyList.add(e);
+    }
+
+    public function getPlayerPosition () : FlxPoint
+    {
+        var p :FlxPoint = new FlxPoint(_player.x, _player.y);
+        return p;
+    }
 }
