@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxColorUtil;
 import flixel.util.FlxPoint;
+import flixel.util.FlxRandom;
 import flixel.util.FlxVector;
 
 /**
@@ -91,6 +92,18 @@ class Enemy extends FlxSprite
         if (healthCurrent <= 0)
         {
             alive = false;
+            
+            spawnPickup();
+            
+        }
+    }
+    
+    private function spawnPickup() :Void
+    {
+        if (FlxRandom.chanceRoll(GameProperties.PickupDropProbability*100.0))   // whysoever they want it in percent and not between 0.0 and 1.0
+        {
+            var p : Pickup = new Pickup(x, y, Pickup.getRandomPickupType());
+            state.spawnPickup(p);
         }
     }
 	

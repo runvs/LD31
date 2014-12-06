@@ -21,6 +21,8 @@ class PlayState extends FlxState
 	private var spawner : EnemySpawner;
 	
 	private var shotList : FlxTypedGroup<Shot>;
+    
+    private var pickupList :FlxTypedGroup<Pickup>;
 	
 	
 	
@@ -38,6 +40,8 @@ class PlayState extends FlxState
 		add(spawner);
         
 		shotList = new FlxTypedGroup<Shot>();
+        
+        pickupList = new FlxTypedGroup<Pickup>();
 	}
 	
 	/**
@@ -73,6 +77,17 @@ class PlayState extends FlxState
             var e:Enemy = enemyList.members[j];
             e.update();
         }
+        for (j in 0 ... pickupList.length)
+        {
+            var p:Pickup = pickupList.members[j];
+            p.update();
+            
+            if (FlxG.overlap(p, player))
+            {
+                player.pickUp(p.type);
+                p.alive = p.exists = false;
+            }
+        }
         
         doCollisions();
         
@@ -90,11 +105,19 @@ class PlayState extends FlxState
             e.draw();
         }
         
+        for (j in 0... pickupList.length)
+		{
+            var p:Pickup= pickupList.members[j];
+            p.draw();
+        }
+        
         for (j in 0... shotList.length)
 		{
             var s:Shot = shotList.members[j];
             s.draw();
         }
+        
+        
         
         player.drawHUD();
     }
@@ -111,6 +134,12 @@ class PlayState extends FlxState
             var newEnemyList:FlxTypedGroup<Enemy> = new FlxTypedGroup<Enemy>();
             enemyList.forEach(function(e:Enemy) { if (e.alive) { newEnemyList.add(e); }} );
             enemyList = newEnemyList;
+        }
+        
+         {
+            var newPickupList:FlxTypedGroup<Pickup> = new FlxTypedGroup<Pickup>();
+            pickupList.forEach(function(p:Pickup) { if (p.alive) { newPickupList.add(p); }} );
+            pickupList = newPickupList;
         }
     }
     
@@ -143,7 +172,7 @@ class PlayState extends FlxState
     public function shotEnemyCollision (e:Enemy, s:Shot):Void
 	{
         //addExplosion(new Explosion(s.sprite.x - 4, s.sprite.y - 6, true));
-        s.deleteObject();
+
         
         
         var push = s.push();
@@ -151,7 +180,7 @@ class PlayState extends FlxState
         e.velocity.y += push.y;
         
         e.takeDamage(s.getDamage());
-        
+        s.deleteObject();
 	}
 
     
@@ -164,10 +193,17 @@ class PlayState extends FlxState
 	{
 		enemyList.add(e);
 	}
+        
+    public function spawnPickup (p:Pickup) : Void
+    {
+        pickupList.add(p);
+    }
 	
 	public function getPlayerPosition () : FlxPoint
 	{
 		var p :FlxPoint = new FlxPoint(player.x, player.y);
 		return p;
 	}
+
+    
 }

@@ -15,5 +15,8 @@ class GameProperties
     public static var EnemyHealthDefault : Float  = 10;
     
     public static var SpawnerOutScreenOffset : Float = 100;
+    
+    public static var PickupDropProbability : Float = 0.1;  
+    public static var PickupLifeTime : Float = 2.5;
 	
 }

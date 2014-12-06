@@ -42,7 +42,7 @@ class Player extends FlxSprite
         healthCurrent = healtMax = GameProperties.PlayerHealthDefault;
 		
         weaponManager = new WeaponManager();
-        weapon = weaponManager.microwavegun;       
+        weapon = weaponManager.machinegun;       
         
 	}
 	
@@ -110,7 +110,7 @@ class Player extends FlxSprite
                 shoot();
 			}		
 		}
-        trace(weapon.shootTimerCurrent);
+        //trace(weapon.shootTimerCurrent);
         if (reload)
         {
             weapon.reload();
@@ -149,5 +149,26 @@ class Player extends FlxSprite
         
 		angle = dir.degrees;
 	}
+    
+    public function pickUp (type :PickupType)
+    {
+         
+        if (type == PickupType.PickupWeaponPistol)
+        {
+            weapon = weaponManager.pistol;
+        }
+        else if (type == PickupType.PickupWeaponMachinegun)
+        {
+            weapon = weaponManager.machinegun;
+        }
+        else if (type == PickupType.PickupWeaponShotgun)
+        {
+            weapon = weaponManager.shotgun;
+        }
+        else if (type == PickupType.PickupWeaponMicrowavegun)
+        {
+            weapon = weaponManager.microwavegun;
+        }
+    }
 	
 }

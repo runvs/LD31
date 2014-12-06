@@ -80,9 +80,9 @@ class Weapon extends FlxObject
     }
     override public function draw():Void
     {
+        var p :FlxPoint =  FlxG.mouse.getWorldPosition(FlxG.camera);
         if (AmmunitionCurrent <= 0)
         {
-            var p :FlxPoint =  FlxG.mouse.getWorldPosition(FlxG.camera);
             if (!reloadTimer.finished)
             {
                 
@@ -96,6 +96,14 @@ class Weapon extends FlxObject
                 outOfAmmoSign.y = p.y;
                 outOfAmmoSign.draw();
             }
+        }
+        
+        if (!reloadTimer.finished)
+        {
+            
+            reloadSign.x = p.x;
+            reloadSign.y = p.y;
+            reloadSign.draw();
         }
         
         
