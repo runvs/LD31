@@ -20,6 +20,7 @@ class Weapon extends FlxObject
     ///////////////////////////////////////////////////////////
 	public var shootTimerCurrent : Float;
 	public var shootTimerMax : Float;
+    public var shootTimerFactor :Float;
     
     public var AmmunitionCurrent : Int;
     public var AmminutionMax : Int;
@@ -59,12 +60,13 @@ class Weapon extends FlxObject
         
         ReloadTime = 1.5;
         ReloadTimeFactor = 1.0;
-        reloadTimer = new FlxTimer(0.1);
+        reloadTimer = new FlxTimer(0.05);
         
         ShotsFired = 1;
         Spread = 0.5;
         
         ShotSpeed = 400;
+        shootTimerFactor = 1.0;
         
         reloadSign = new FlxSprite();
         reloadSign.makeGraphic(20, 20, FlxColorUtil.makeFromARGB(1.0, 125, 125, 255));
@@ -118,7 +120,7 @@ class Weapon extends FlxObject
         if (!multipleShot)
         {
             AmmunitionCurrent -= 1;
-            shootTimerCurrent = shootTimerMax;
+            shootTimerCurrent = shootTimerMax * shootTimerFactor;
         }
         return getDamage();
     }
@@ -160,6 +162,20 @@ class Weapon extends FlxObject
         retval.x = v.x + startX;
         retval.y = v.y + startY;
         return retval;
+    }
+    
+    public function doFireRatePickup () :Void 
+    {
+         AmmunitionCurrent = AmminutionMax;
+         shootTimerFactor = 0.5;
+         
+         var t : FlxTimer = new FlxTimer(GameProperties.PickUpFireRateTime, resetFireRate);
+         
+    }
+    
+    public function resetFireRate(t:FlxTimer):Void
+    {
+        shootTimerFactor = 1.0;
     }
     
 }

@@ -22,5 +22,6 @@ class GameProperties
     
     public static var PickupDropProbability : Float = 0.1;  
     public static var PickupLifeTime : Float = 2.5;
+    public static var PickUpFireRateTime : Float = 5; // how long the increase lasts
 	
 }
