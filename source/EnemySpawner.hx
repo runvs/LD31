@@ -99,7 +99,6 @@ class EnemySpawner extends FlxObject
     public function increaseMaxEnemyNumber (t:FlxTimer) :Void
     {
         currentMaxEnemies += 1;
-        //trace ("increase enemies");
     }
 	
 	

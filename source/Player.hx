@@ -243,7 +243,6 @@ class Player extends FlxSprite
             }
         }
         
-        //trace(weapon.shootTimerCurrent);
         if (reload)
         {
             weapon.reload();

@@ -387,12 +387,6 @@ class PlayState extends FlxState
         
         e.takeDamage(s.getDamage());
         
-        
-        //_goreLayer.pixels.lock();
-        
-       
-        
-        
         for (i in 0 ... GameProperties.GoreAmount)
         {
             var posX : Int = FlxRandom.intRanged(Math.round(e.x) - 20, Math.round(e.x) + 20);
@@ -403,9 +397,7 @@ class PlayState extends FlxState
            
             var spr : FlxSprite = new FlxSprite();
             spr.makeGraphic(2 + FlxRandom.intRanged(0,2), 2 + FlxRandom.intRanged(0,2),  FlxColorUtil.makeFromARGB(1.0,r,g,b));
-            trace (posX + " " + posY);
             var rect : Rectangle = new Rectangle(posX , posX, 2, 2);
-            //_goreLayer.pixels.fillRect( rect, FlxColorUtil.getColor24(255,0,0)); 
             _goreLayer.stamp(spr, posX, posY);
         }
 
@@ -459,7 +451,7 @@ class PlayState extends FlxState
         var centerPositionY : Float = sizeY / 2.0;
         
         var distanceToCenterMax : Float = Math.sqrt(centerPositionX * centerPositionX + centerPositionY * centerPositionY);
-        //_vignetteSprite.pixels.lock();
+        
         for (i in 0...sizeX)
         {
             for (j in 0...sizeY)
@@ -470,20 +462,11 @@ class PlayState extends FlxState
                 newAlpha = 255 * i / sizeX;
                 var alphaInt :Int = Math.round(newAlpha);
                
-                //var c : Int = FlxColorUtil.getColor32(alphaInt, 255, 255, 255);
-                
                 var c : UInt = alphaInt << 24 | 0 << 16 | 0 << 8 | 0;
                 _vignetteSprite.pixels.setPixel32(i, j, c);
-                if (alphaInt == 0)
-                {
-                    trace (i + " " + j);
-                }
             }
             
         }
-        //_vignetteSprite.pixels.unlock();
-
-        
     }
 }
 
