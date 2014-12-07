@@ -30,7 +30,9 @@ class Player extends FlxSprite
     private var weaponManager : WeaponManager;
     
     // yeah, this should be in the weapon class, but here it is more useful.
-    private var soundDeadMansClick :FlxSound;
+    private var soundDeadMansClick : FlxSound;
+    private var soundPickup : FlxSound;
+    private var soundWalking : FlxSound;
 
 	
 	public function new(X:Float=0, Y:Float=0, playState:PlayState) 
@@ -50,6 +52,12 @@ class Player extends FlxSprite
         soundDeadMansClick = new FlxSound();
         soundDeadMansClick = FlxG.sound.load(AssetPaths.deadmansclick2__wav, 1.0, false, false, false);
         
+        soundPickup = new FlxSound();
+        soundPickup = FlxG.sound.load(AssetPaths.pickup__wav, 1.0, false, false, false);
+        
+        soundWalking = new FlxSound();
+        soundWalking = FlxG.sound.load(AssetPaths.walking__ogg, 0.25 ,true , false ,true);
+        
         weaponManager = new WeaponManager();
         weapon = weaponManager.microwavegun; 
         
@@ -64,6 +72,15 @@ class Player extends FlxSprite
 		doMovement();
         
         weapon.update();
+        var velo : FlxVector = new FlxVector(velocity.x, velocity.y);
+        if (velo.length > 50)
+        {
+            soundWalking.volume = 0.25;
+        }
+        else
+        {
+            soundWalking.volume = 0.0;
+        }
 	}
 
 	public override function draw() :Void
@@ -180,7 +197,7 @@ class Player extends FlxSprite
     
     public function pickUp (type :PickupType)
     {
-         
+        soundPickup.play();
         if (type == PickupType.PickupWeaponPistol)
         {
             weapon = weaponManager.pistol;
