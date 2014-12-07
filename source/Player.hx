@@ -4,6 +4,7 @@ import flixel.effects.FlxSpriteFilter;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.system.FlxSound;
+import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColorUtil;
 import flixel.util.FlxPoint;
@@ -45,9 +46,12 @@ class Player extends FlxSprite
     private var _shieldTimerRemaining:Float;
     private var _slowMotionTimer :FlxTimer;
     
+    #if !web
     private var spriteFilter : FlxSpriteFilter;
     private var filter : DropShadowFilter;
     private var filterShield : GlowFilter;
+    #end
+    private var healthBar : FlxSprite;
 
 
     public function new(X:Float=0, Y:Float=0, playState:PlayState) 
@@ -91,16 +95,25 @@ class Player extends FlxSprite
         
         
         weaponManager = new WeaponManager();
-        weapon = weaponManager.machinegun;
+        weapon = weaponManager.pistol;
         
         _shieldTimerRemaining = -1.0;
         _slowMotionTimer = null;
-        
+        #if !web
         filter = new DropShadowFilter(2, 45, 0, .5, 10, 10, 1, 1);
         spriteFilter = new FlxSpriteFilter(this, 0, 0);
 		spriteFilter.addFilter(filter);
         
         filterShield = new GlowFilter(FlxColorUtil.makeFromARGB(1.0, 178, 206, 161), 1.0, 12.5, 12.5, 1.5, 1);  // will be added in pickup
+        #end
+        
+        healthBar = new FlxSprite();
+        healthBar.makeGraphic(32, 720, FlxColorUtil.makeFromARGB(1.0, 96, 33, 31));
+        healthBar.origin = new FlxPoint(0, 720);
+        healthBar.x = 0;
+        healthBar.y = 0;
+        healthBar.scrollFactor.x = 0;
+        healthBar.scrollFactor.y = 0;
         
     }
 	
@@ -133,6 +146,8 @@ class Player extends FlxSprite
         soundWalking.pan = panPosition;
         soundDeadMansClick.pan = panPosition;
         soundPickup.pan = panPosition;
+        
+        
 	}
 
 	public override function draw() :Void
@@ -142,13 +157,22 @@ class Player extends FlxSprite
         {
             _shieldSprite.draw();
         }
+        healthBar.draw();
 	}
     
     public function drawHUD():Void
     {
         weapon.draw();
+        
+        drawHealthBar();
+        
     }
 	
+    private function drawHealthBar() : Void
+    {
+        
+    }
+    
 	private function getInput() :Void
 	{
 		var up:Bool = FlxG.keys.anyPressed(["W", "UP"]);
@@ -247,6 +271,9 @@ class Player extends FlxSprite
             if (_shieldTimerRemaining < 0)
             {
                 healthCurrent -= GameProperties.EnemyShootDamage;
+                
+                FlxTween.tween(healthBar.scale, { y : healthCurrent / _healthMax }, 0.75,  { ease: FlxEase.cubeInOut} );
+                
                 FlxG.camera.shake(0.0075, 0.2);
                 FlxG.camera.flash(FlxColorUtil.makeFromARGB(0.4, 96, 33, 31), 0.2);
                 soundHit.play();
@@ -299,8 +326,10 @@ class Player extends FlxSprite
         else if (type == PickupType.PickupShield)
         {
             _shieldTimerRemaining = GameProperties.PickupShieldTime;
+            #if !web
             var t : FlxTimer = new FlxTimer(GameProperties.PickupShieldTime, function (t:FlxTimer) { spriteFilter.removeFilter(filterShield); } );
             spriteFilter.addFilter(filterShield);
+            #end
         }
         else if (type == PickupType.PickupSlowMotion)
         {
@@ -321,6 +350,7 @@ class Player extends FlxSprite
     {
         FlxG.camera.flash(FlxColorUtil.makeFromARGB(0.25, 189, 221, 184), 0.5);
         healthCurrent = _healthMax;
+         FlxTween.tween(healthBar.scale, { y : healthCurrent / _healthMax }, 0.75,  { ease: FlxEase.cubeInOut} );
     }
 	
     public function resetSlowMotion (t:FlxTimer) : Void

@@ -36,10 +36,13 @@ class Enemy extends FlxSprite
     
     private var _personalVelocityAdd : Float;
     
+    #if !web
     private var spriteFilter : FlxSpriteFilter;
     private var filter : DropShadowFilter;
+	#end
+    
     private var hitSprite : FlxSprite;
-	
+    
 	public function new(X:Float=0, Y:Float=0, playstate:PlayState, level:Float, seed:Float) 
 	{
 		super(X, Y);
@@ -55,7 +58,7 @@ class Enemy extends FlxSprite
         loadGraphic(AssetPaths.snowman__png, false, 32, 32);
 		targetPosition = new FlxPoint();
         
-        _healthCurrent = _healthMax = GameProperties.EnemyHealthDefault;
+        _healthCurrent = _healthMax = GameProperties.EnemyHealthDefault * (1.0 + (Math.sqrt(level) / 10.0));
         
         soundHit = new FlxSound();
         soundHit = FlxG.sound.load(AssetPaths.hit__wav, 1.0, false, false, false);
@@ -65,10 +68,11 @@ class Enemy extends FlxSprite
         
         _personalVelocityAdd = GameProperties.EnemyMovementVelocityAdd * Math.pow(_level*0.5, 0.125) * (1.0 + _seed);
         
-        
+        #if !web
         filter = new DropShadowFilter(2, 45, 0, .5, 10, 10, 1, 1);
         spriteFilter = new FlxSpriteFilter(this, 0, 0);
 		spriteFilter.addFilter(filter);
+        #end
         
         hitSprite = new FlxSprite();
         hitSprite.loadGraphic(AssetPaths.hitGFX__png, true, 16, 16);

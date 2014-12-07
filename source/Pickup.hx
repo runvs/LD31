@@ -2,6 +2,7 @@ package ;
 
 import flixel.effects.FlxSpriteFilter;
 import flixel.FlxSprite;
+import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxAngle;
 import flixel.util.FlxColorUtil;
@@ -49,9 +50,10 @@ class Pickup extends FlxSprite
     
     private var numberOfRemainingFlashLoops :Int;
     
+    #if !web
     private var spriteFilter : FlxSpriteFilter;
     private var filter : GlowFilter;
-    
+    #end
        
     public function new(X:Float=0, Y:Float=0, pickupType:PickupType) 
     {
@@ -99,12 +101,18 @@ class Pickup extends FlxSprite
         animation.add("base", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
         animation.play("base");
         
+        this.scale.x = 0;
+        this.scale.y = 0;
+        
+        FlxTween.tween(this.scale, { x:1.0, y:1.0 }, 0.5, {ease : FlxEase.bounceOut} );
+        
         var t : FlxTimer  = new FlxTimer(GameProperties.PickupLifeTime, switchToFade);
         numberOfRemainingFlashLoops = 4;
-        
+        #if !web
         filter = new GlowFilter( FlxColorUtil.makeFromARGB(1.0, 145, 123, 77), 1, 15.5, 15.5, 1.5, 1);
         spriteFilter = new FlxSpriteFilter(this, 15, 15);
         spriteFilter.addFilter(filter);
+        #end
         
     }
     

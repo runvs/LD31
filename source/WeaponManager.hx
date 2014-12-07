@@ -14,7 +14,7 @@ class WeaponManager
         pistol.shootTimerMax  = 0.6;
         pistol.AmminutionMax = pistol.AmmunitionCurrent  = 12;
         pistol.DamageBase = 4;
-        pistol.ReloadTime = 1.5;// Reload Time in Seconds
+        pistol.ReloadTime = 0.9;// Reload Time in Seconds
         pistol.ShotsFired = 1;
         pistol.Spread = 2.0;
         pistol.ShotSpeed = 400;
@@ -26,7 +26,7 @@ class WeaponManager
         machinegun.shootTimerMax  = 0.1;
         machinegun.AmminutionMax  = machinegun.AmmunitionCurrent = 30;
         machinegun.DamageBase = 2;
-        machinegun.ReloadTime = 3.5;// Reload Time in Seconds
+        machinegun.ReloadTime = 2.5;// Reload Time in Seconds
         machinegun.ShotsFired = 1;
         machinegun.Spread = 3.0;
         machinegun.ShotSpeed = 600;
@@ -37,9 +37,9 @@ class WeaponManager
         shotgun.shootTimerMax  = 0.8;
         shotgun.AmminutionMax   = shotgun.AmmunitionCurrent = 5;
         shotgun.DamageBase = 3;
-        shotgun.ReloadTime = 3.5;// Reload Time in Seconds
-        shotgun.ShotsFired = 5;
-        shotgun.Spread = 12.0;
+        shotgun.ReloadTime = 2.5;// Reload Time in Seconds
+        shotgun.ShotsFired = 7;
+        shotgun.Spread = 12.5;
         shotgun.ShotSpeed = 500;
         shotgun.type = ShotType.Bullet;
         shotgun.name = "shotgun";

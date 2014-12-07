@@ -28,8 +28,9 @@ class Shot extends FlxSprite
     private var soundShot :FlxSound;
     
     private var spriteFilter : FlxSpriteFilter;
+    #if !web
     private var filter : GlowFilter;
-    
+    #end
 	public function new(X:Float=0, Y:Float=0, target : FlxPoint, w:Weapon) 
 	{
 		super(X, Y);
@@ -71,10 +72,11 @@ class Shot extends FlxSprite
                 soundShot = FlxG.sound.load(AssetPaths.shoot3__wav, bulletVolume, false, true, false );
             }
             soundShot.play(false);
-            
+            #if !web
             filter = new GlowFilter(FlxColorUtil.makeFromARGB(1.0,242,249,244), 1, 12.5, 12.5, 1.5, 1);
             spriteFilter = new FlxSpriteFilter(this, 50, 50);
             spriteFilter.addFilter(filter);
+            #end
         }
 		else if (type == ShotType.Microwave)
         {
@@ -112,7 +114,7 @@ class Shot extends FlxSprite
         
         if (type == ShotType.Bullet)
         {
-            retval = 55.0;
+            retval = 35.0;
         }
         else if (type == ShotType.Flames)
         {
