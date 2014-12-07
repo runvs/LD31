@@ -22,7 +22,6 @@ class GameProperties
     public static var EnemySpawnerTimeTilIncrease : Float = 3.5;
     public static var EnemySpawnerLevelExponent : Float = 1.5;
     
-    
     public static var SpawnerOutScreenOffset : Float = 100;
     
     public static var PickupDropProbability : Float = 0.3;  
@@ -32,5 +31,7 @@ class GameProperties
     public static var PickupShieldTime : Float = 5; // how long the shield lasts    
     public static var PickupSlowMotionTimeFactor : Float = 0.25;
     public static var PickupSlowMotionTime : Float = 4.5; // how long (in scaled time units) the slowmotion will take
+    
+    public static var SoundPanScale : Float = 0.6;
 	
 }

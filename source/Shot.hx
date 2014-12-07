@@ -44,6 +44,8 @@ class Shot extends FlxSprite
         lifetime = 10;
         
         soundShot = new FlxSound();
+        var panPosition : Float = (x- 640.0) / 640.0 * GameProperties.SoundPanScale;
+        soundShot.pan = panPosition;
         
         if (type == ShotType.Bullet)
         {

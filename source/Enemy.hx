@@ -75,7 +75,13 @@ class Enemy extends FlxSprite
             {
                 shootTimerCurrent -= FlxG.elapsed;
             }
+            
+            // -1 complete right, +1 left
+            var panPosition : Float = (x- 640.0) / 640.0 * GameProperties.SoundPanScale;
+            soundHit.pan = panPosition;
         }
+        
+        
 	}
 	
 	public override function draw() :Void

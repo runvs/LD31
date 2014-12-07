@@ -104,6 +104,11 @@ class Player extends FlxSprite
         {
             _shieldTimerRemaining -= FlxG.elapsed;
         }
+        
+        var panPosition : Float = (x- 640.0) / 640.0 * GameProperties.SoundPanScale;
+        soundWalking.pan = panPosition;
+        soundDeadMansClick.pan = panPosition;
+        soundPickup.pan = panPosition;
 	}
 
 	public override function draw() :Void
@@ -215,8 +220,12 @@ class Player extends FlxSprite
         {
             e.resetShootTimer();
             
-            healthCurrent -= GameProperties.EnemyShootDamage;
-            FlxG.camera.shake(0.01, 0.2);
+            if (_shieldTimerRemaining < 0)
+            {
+                healthCurrent -= GameProperties.EnemyShootDamage;
+                FlxG.camera.shake(0.0075, 0.2);
+                FlxG.camera.flash(FlxColorUtil.makeFromARGB(0.4, 96, 33, 31), 0.2);
+            }
         }
     }
     

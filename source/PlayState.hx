@@ -58,7 +58,7 @@ class PlayState extends FlxState
         _gameOverAgainText = new FlxText(0, FlxG.height - 40, FlxG.width, "To try again press SPACE.");
         _gameOverAgainText.setFormat(null, 32, 0xAAFFFFFF, "center");
         
-        _player = new Player(125, 125, this);
+        _player = new Player(640, 380, this);
         
         _backgroundSprite = new FlxSprite();
         _backgroundSprite.loadGraphic(AssetPaths.background__png);
