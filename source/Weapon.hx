@@ -70,9 +70,14 @@ class Weapon extends FlxObject
         shootTimerFactor = 1.0;
         
         reloadSign = new FlxSprite();
-        reloadSign.makeGraphic(20, 20, FlxColorUtil.makeFromARGB(1.0, 125, 125, 255));
+        reloadSign.loadGraphic(AssetPaths.reloading__png, true, 20, 20);
+        reloadSign.animation.add("base", [0, 1, 2, 3], 8);
+        reloadSign.animation.play("base");
+        
         outOfAmmoSign = new FlxSprite();
-        outOfAmmoSign.makeGraphic(20, 20, FlxColorUtil.makeFromARGB(1.0, 255, 100, 100));
+        outOfAmmoSign.loadGraphic(AssetPaths.outOfAmmo__png, true, 20, 20);
+        outOfAmmoSign.animation.add("base", [0, 1], 4);
+        outOfAmmoSign.animation.play("base");
         
         name = "pistol";
     }
@@ -82,10 +87,14 @@ class Weapon extends FlxObject
     {
         super.update();
         if (shootTimerCurrent >= 0)
-		{
-			shootTimerCurrent -= FlxG.elapsed;
-		}
+        {
+            shootTimerCurrent -= FlxG.elapsed;
+        }
+        
+        reloadSign.update();
+        outOfAmmoSign.update();
     }
+    
     override public function draw():Void
     {
         var p :FlxPoint =  FlxG.mouse.getWorldPosition(FlxG.camera);
@@ -93,14 +102,13 @@ class Weapon extends FlxObject
         {
             if (!reloadTimer.finished)
             {
-                
-                reloadSign.x = p.x;
+                reloadSign.x = p.x + 10;
                 reloadSign.y = p.y;
                 reloadSign.draw();
             }
             else
             {
-                outOfAmmoSign.x = p.x;
+                outOfAmmoSign.x = p.x + 10;
                 outOfAmmoSign.y = p.y;
                 outOfAmmoSign.draw();
             }
@@ -108,8 +116,7 @@ class Weapon extends FlxObject
         
         if (!reloadTimer.finished)
         {
-            
-            reloadSign.x = p.x;
+            reloadSign.x = p.x + 10;
             reloadSign.y = p.y;
             reloadSign.draw();
         }
