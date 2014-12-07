@@ -96,7 +96,7 @@ class Pickup extends FlxSprite
         }
         else if (type == PickupType.PickupDamage)
         {
-            loadGraphic(AssetPaths.pickup_slowmotion__png, true, 32, 32);
+            loadGraphic(AssetPaths.pickup_damage__png, true, 32, 32);
         }
         else
         {
