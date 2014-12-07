@@ -174,7 +174,6 @@ class Weapon extends FlxObject
          reloadTimer.reset(0.01);
          
          var t : FlxTimer = new FlxTimer(GameProperties.PickUpFireRateTime, resetFireRate);
-         
     }
     
     public function resetFireRate(t:FlxTimer):Void

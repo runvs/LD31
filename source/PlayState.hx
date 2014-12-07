@@ -7,12 +7,14 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxTypedGroup;
 import flixel.text.FlxText;
+import flixel.tweens.FlxTween;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxColorUtil;
 import flixel.util.FlxMath;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
+import flixel.util.FlxTimer;
 import flixel.util.FlxVector;
 import haxe.Int32;
 
@@ -42,6 +44,10 @@ class PlayState extends FlxState
     private var _gameOverText:FlxText;
     private var _gameOverScoreText:FlxText;
     private var _gameOverAgainText:FlxText;
+    
+    private var _tutorialText1:FlxText; // movement wasd
+    private var _tutorialText2:FlxText; // shoot lmb
+    private var _tutorialText3:FlxText; // reload rmb
     
     /**
      * Function that is called up when to state is created to set it up. 
@@ -94,6 +100,21 @@ class PlayState extends FlxState
         FlxG.sound.playMusic(AssetPaths.LD31_OST__ogg,0.5);
         #end
         
+        
+        _tutorialText1 = new FlxText(500, 100, 500, "Move - W A S D", 15, true);
+        _tutorialText2 = new FlxText(500, 150, 500, "Shoot - Left Mouse Button", 15, true);
+        _tutorialText3 = new FlxText(500, 200, 500, "Reload - Right Mouse Button", 15, true);
+        _tutorialText1.alpha = _tutorialText2.alpha = _tutorialText3.alpha = 0;
+        //_tutorialText1.scale.x = _tutorialText1.scale.y = _tutorialText2.scale.x = _tutorialText2.scale.y = _tutorialText3.scale.x = _tutorialText3.scale.y = 0;
+        
+        FlxTween.tween(_tutorialText1, { alpha : 1 }, 0.5);
+        var t2In :FlxTimer = new FlxTimer(0.5, function (t:FlxTimer) { FlxTween.tween(_tutorialText2, { alpha : 1 }, 0.5);  } );
+        var t3In :FlxTimer = new FlxTimer(1.0, function (t:FlxTimer) { FlxTween.tween(_tutorialText3, { alpha : 1 }, 0.5); } );
+        
+        var t1Out : FlxTimer = new FlxTimer(4.5, function (t:FlxTimer) { FlxTween.tween(_tutorialText1, { alpha:0 }, 0.5  ); } );
+        var t2Out : FlxTimer = new FlxTimer(5.0, function (t:FlxTimer) { FlxTween.tween(_tutorialText2, { alpha:0 }, 0.5  ); } );
+        var t3Out : FlxTimer = new FlxTimer(5.5, function (t:FlxTimer) { FlxTween.tween(_tutorialText3, { alpha:0 }, 0.5  ); } );
+
     }
 
     /**
@@ -205,6 +226,10 @@ class PlayState extends FlxState
 
         _player.drawHUD();
         
+        _tutorialText1.draw();
+        _tutorialText2.draw();
+        _tutorialText3.draw();
+        
         if (_ending)
         {
             _gameOverFade.draw();
@@ -292,7 +317,10 @@ class PlayState extends FlxState
     public function shotEnemyCollision (e:Enemy, s:Shot):Void
     {
         //addExplosion(new Explosion(s.sprite.x - 4, s.sprite.y - 6, true));
-        s.deleteObject();
+        if (!s.isDamageShot)
+        {
+            s.deleteObject();
+        }
         
         var push = s.push();
         e.velocity.x += push.x;
@@ -375,5 +403,6 @@ class PlayState extends FlxState
         
     }
 }
+
 
 

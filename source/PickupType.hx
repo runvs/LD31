@@ -15,5 +15,6 @@ enum PickupType
     PickupShield;
     PickupFirerate;
     PickupSlowMotion;
+    PickupDamage;
     
 }

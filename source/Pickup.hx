@@ -20,6 +20,7 @@ class Pickup extends FlxSprite
     private static var _recursionDepth:Int; // for constraining picking up random pickup up picker. Hope you picked that up.
     public static function getRandomPickupType (state:PlayState, first:Bool = true): PickupType
     {
+        
         if (first)
         {
             _recursionDepth = 0;
@@ -90,6 +91,10 @@ class Pickup extends FlxSprite
             loadGraphic(AssetPaths.pickup_shield__png, true, 32, 32);
         }
         else if  (type == PickupType.PickupSlowMotion)
+        {
+            loadGraphic(AssetPaths.pickup_slowmotion__png, true, 32, 32);
+        }
+        else if (type == PickupType.PickupDamage)
         {
             loadGraphic(AssetPaths.pickup_slowmotion__png, true, 32, 32);
         }
