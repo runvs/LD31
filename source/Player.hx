@@ -15,13 +15,11 @@ using flixel.util.FlxSpriteUtil;
  */
 class Player extends FlxSprite
 {
-	// this is the position, the mouse is currently at.
-	private var targetPosition : FlxPoint;
-	
-
-	
-	private var healthCurrent : Float;
-	private var healtMax : Float;
+    // this is the position, the mouse is currently at.
+    private var targetPosition : FlxPoint;
+    
+    private var _healthCurrent : Float;
+    private var _healthMax : Float;
     
     private var state:PlayState;
     
@@ -34,21 +32,20 @@ class Player extends FlxSprite
     private var soundPickup : FlxSound;
     private var soundWalking : FlxSound;
 
-	
-	public function new(X:Float=0, Y:Float=0, playState:PlayState) 
-	{
-		super(X, Y);
+
+    public function new(X:Float=0, Y:Float=0, playState:PlayState) 
+    {
+        super(X, Y);
         
         state = playState;
         
-		//makeGraphic(24, 24, FlxColorUtil.makeFromARGB(1.0, 125, 255, 125));
         loadGraphic(AssetPaths.player__png, true, 16, 16);
         animation.add("normal", [0], 30, true);
         animation.add("die", [1, 2, 3, 4, 5, 6, 7, 8, 9], 30, false);
         animation.play("normal");
         
-        healthCurrent = healtMax = GameProperties.PlayerHealthDefault;
-		
+        _healthCurrent = _healthMax = GameProperties.PlayerHealthDefault;
+        
         soundDeadMansClick = new FlxSound();
         soundDeadMansClick = FlxG.sound.load(AssetPaths.deadmansclick2__wav, 1.0, false, false, false);
         
@@ -59,11 +56,8 @@ class Player extends FlxSprite
         soundWalking = FlxG.sound.load(AssetPaths.walking__ogg, 0.25 ,true , false ,true);
         
         weaponManager = new WeaponManager();
-        weapon = weaponManager.microwavegun; 
-        
-        
-        
-	}
+        weapon = weaponManager.microwavegun;
+    }
 	
 	override public function update():Void 
 	{
@@ -93,7 +87,6 @@ class Player extends FlxSprite
     {
         weapon.draw();
     }
-	
 	
 	private function getInput() :Void
 	{
@@ -183,7 +176,17 @@ class Player extends FlxSprite
         }
     }
     
-	
+    public function getHit(e:Enemy)
+    {
+        // Check if enemy can hit the player
+        if (e.shootTimerCurrent <= 0.0)
+        {
+            e.resetShootTimer();
+            
+            _healthCurrent -= GameProperties.EnemyShootDamage;
+        }
+    }
+    
 	private function doMovement() : Void
 	{
 		velocity.x *= GameProperties.PlayerMovementVelocityDrag;
@@ -223,7 +226,7 @@ class Player extends FlxSprite
     private function healfull():Void
     {
         FlxG.camera.flash(FlxColorUtil.makeFromARGB(0.25, 189, 221, 184), 0.5);
-        healthCurrent = healtMax;
+        _healthCurrent = _healthMax;
     }
 	
 }

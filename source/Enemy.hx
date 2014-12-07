@@ -18,11 +18,11 @@ class Enemy extends FlxSprite
 	// this is the position, where the player is currently at.
 	private var targetPosition : FlxPoint;
 	
-	private var healthCurrent:Float;
-	private var healtMax:Float;
+	private var _healthCurrent:Float;
+	private var _healthMax:Float;
 	
-	private var shootTimerCurrent :Float;
-	private var shootTimerMax :Float;
+	public var shootTimerCurrent : Float;
+	private var _shootTimerMax : Float = GameProperties.EnemyShootTimerMax;
 	
 	private var state : PlayState;
     
@@ -34,12 +34,14 @@ class Enemy extends FlxSprite
 		super(X, Y);
 		
 		state = playstate;
+        
+        shootTimerCurrent = _shootTimerMax;
 		
 		//makeGraphic(24, 24, FlxColorUtil.makeFromARGB(1.0, 255, 125, 125));
         loadGraphic(AssetPaths.snowman__png, false, 32, 32);
 		targetPosition = new FlxPoint();
         
-        healthCurrent = healtMax = GameProperties.EnemyHealthDefault;
+        _healthCurrent = _healthMax = GameProperties.EnemyHealthDefault;
         
         soundHit = new FlxSound();
         soundHit = FlxG.sound.load(AssetPaths.hit__wav, 1.0, false, false, false);
@@ -93,19 +95,23 @@ class Enemy extends FlxSprite
     
     public function takeDamage (damage:Float)
     {
-        healthCurrent -= damage;
+        _healthCurrent -= damage;
         checkDead();
         soundHit.play(false);
     }
     
+    public function resetShootTimer() : Void
+    {
+        shootTimerCurrent += _shootTimerMax;
+    }
+    
     public function checkDead() : Void
     {
-        if (healthCurrent <= 0)
+        if (_healthCurrent <= 0)
         {
             alive = false;
             soundDie.play(false);
             spawnPickup();
-            
         }
     }
     

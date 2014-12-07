@@ -179,25 +179,38 @@ class PlayState extends FlxState
 
     private function doCollisions ():Void
     {
-        for (j in 0... _shotList.length)
+        for (i in 0..._enemyList.length)
         {
-            var s:Shot = _shotList.members[j];
-            if (s.alive && s.exists )
+            var e:Enemy = _enemyList.members[i];
+            if (!(e.alive && e.exists))
             {
-                for (i in 0..._enemyList.length)
+                continue;
+            }
+            
+            for (j in 0... _shotList.length)
+            {
+                var s:Shot = _shotList.members[j];
+                if (!(s.alive && s.exists))
                 {
-                    var e:Enemy = _enemyList.members[i];
-                    if (!(e.alive && e.exists))
+                    continue;
+                }
+                
+                // Check for collision enemy<->shot
+                if (FlxG.overlap(e, s))
+                {
+                    if (FlxG.pixelPerfectOverlap(e, s,1))
                     {
-                        continue;
+                        shotEnemyCollision(e, s);
                     }
-                    if (FlxG.overlap(e, s))
-                    {
-                        if (FlxG.pixelPerfectOverlap(e, s,1))
-                        {
-                            shotEnemyCollision(e, s);
-                        }
-                    }
+                }
+            }
+                
+            // Check for collision player<->enemy
+            if (FlxG.overlap(e, _player))
+            {
+                if (FlxG.pixelPerfectOverlap(e, _player, 1))
+                {
+                    _player.getHit(e);
                 }
             }
         }
