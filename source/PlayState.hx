@@ -42,6 +42,8 @@ class PlayState extends FlxState
     private var _ending = false;
     private var _score = 0;
     
+    private var _muteButton:FlxButton;
+    
     private var _gameOverFade:FlxSprite;
     private var _gameOverText:FlxText;
     private var _gameOverScoreText:FlxText;
@@ -57,6 +59,12 @@ class PlayState extends FlxState
     override public function create():Void
     {
         super.create();
+        
+        _muteButton = new FlxButton(FlxG.width - 32, 0, "", muteSound);
+        _muteButton.loadGraphic(AssetPaths.mute__png, true, 32, 32);
+        _muteButton.animation.add("on", [0]);
+        _muteButton.animation.add("off", [1]);
+        _muteButton.animation.play("on");
         
         _gameOverFade = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xAA000000);
         
@@ -138,6 +146,8 @@ class PlayState extends FlxState
     override public function update():Void
     {
         super.update();
+        
+        _muteButton.update();
         
         if (_ending)
         {
@@ -247,6 +257,7 @@ class PlayState extends FlxState
         }
 
         _player.drawHUD();
+        _muteButton.draw();
         
         _tutorialText1.draw();
         _tutorialText2.draw();
@@ -261,6 +272,20 @@ class PlayState extends FlxState
         }
         _vignetteSprite.draw();
         
+    }
+    
+    private function muteSound():Void
+    {
+        if (_muteButton.animation.name == "on")
+        {
+            _muteButton.animation.play("off");
+            FlxG.sound.muted = true;
+        }
+        else
+        {
+            _muteButton.animation.play("on");
+            FlxG.sound.muted = false;
+        }
     }
     
     private function resetGame():Void
