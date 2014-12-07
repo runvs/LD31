@@ -22,11 +22,12 @@ class EnemySpawner extends FlxObject
 		super();
 		state = playstate;
 		
-		spawnEnemy();
+		
         
         spawnTimerCurrent = 0;
         currentMaxEnemies = 2;
-        var t :FlxTimer  = new FlxTimer(5, increaseMaxEnemyNumber, 0);
+        var t :FlxTimer  = new FlxTimer(GameProperties.EnemySpawnerTimeTilIncrease, increaseMaxEnemyNumber, 0);
+        spawnEnemy();
 		
 	}
 	
@@ -89,7 +90,8 @@ class EnemySpawner extends FlxObject
 	private function spawnEnemy () : Void 
 	{
 		var pos : FlxPoint = getRandomSpawnPosition();
-		var e :Enemy = new Enemy(pos.x, pos.y, state);
+        var level : Float = Math.pow((currentMaxEnemies / 2.0), GameProperties.EnemySpawnerLevelExponent);
+		var e :Enemy = new Enemy(pos.x, pos.y, state, level, FlxRandom.floatRanged( -0.25, 0.25));
 		
 		state.spawnEnemy(e);
 	}
