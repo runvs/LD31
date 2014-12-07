@@ -3,12 +3,14 @@ package ;
 import flixel.effects.FlxSpriteFilter;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.input.gamepad.LogitechButtonID;
 import flixel.system.FlxSound;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColorUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
+import flixel.util.FlxTimer;
 import flixel.util.FlxVector;
 import openfl._v2.filters.GlowFilter;
 
@@ -29,6 +31,8 @@ class Shot extends FlxSprite
     
     public var isDamageShot:Bool;
     
+    public var disabled : Bool;
+    
     private var spriteFilter : FlxSpriteFilter;
     #if !web
     private var filter : GlowFilter;
@@ -38,6 +42,7 @@ class Shot extends FlxSprite
 		super(X, Y);
                 
         isDamageShot = damageShot;
+        disabled = false;
         
         
         damage = w.getDamage();
@@ -173,5 +178,11 @@ class Shot extends FlxSprite
     public function getDamage ():Float 
     {
         return damage;
+    }
+    
+    public function disable():Void
+    {
+        disabled = true;
+        var t: FlxTimer = new FlxTimer(0.1, function (t:FlxTimer) { disabled = false; } );
     }
 }

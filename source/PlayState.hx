@@ -278,7 +278,7 @@ class PlayState extends FlxState
             for (j in 0... _shotList.length)
             {
                 var s:Shot = _shotList.members[j];
-                if (!(s.alive && s.exists))
+                if (!(s.alive && s.exists && !s.disabled))
                 {
                     continue;
                 }
@@ -321,12 +321,18 @@ class PlayState extends FlxState
         {
             s.deleteObject();
         }
+        else
+        {
+            s.disable();
+        }
         
         var push = s.push();
         e.velocity.x += push.x;
         e.velocity.y += push.y;
         
         e.takeDamage(s.getDamage());
+        
+        
         
         if (!e.alive)
         {

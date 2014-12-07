@@ -58,7 +58,7 @@ class Enemy extends FlxSprite
         loadGraphic(AssetPaths.snowman__png, false, 32, 32);
 		targetPosition = new FlxPoint();
         
-        _healthCurrent = _healthMax = GameProperties.EnemyHealthDefault * (1.0 + (Math.sqrt(level) / 10.0));
+        _healthCurrent = _healthMax = GameProperties.EnemyHealthDefault * (1.0 + (Math.pow(_level*0.25, 0.125)));
         
         soundHit = new FlxSound();
         soundHit = FlxG.sound.load(AssetPaths.hit__wav, 1.0, false, false, false);
@@ -66,7 +66,7 @@ class Enemy extends FlxSprite
         soundDie = new FlxSound();
         soundDie = FlxG.sound.load(AssetPaths.die__wav, 1.0, false, false, false);
         
-        _personalVelocityAdd = GameProperties.EnemyMovementVelocityAdd * Math.pow(_level*0.5, 0.125) * (1.0 + _seed);
+        _personalVelocityAdd = GameProperties.EnemyMovementVelocityAdd * Math.pow(_level*0.25, 0.125) * (1.0 + _seed);
         
         #if !web
         filter = new DropShadowFilter(2, 45, 0, .5, 10, 10, 1, 1);
