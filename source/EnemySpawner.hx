@@ -45,12 +45,10 @@ class EnemySpawner extends FlxObject
     
     private function getSpawnTime():Float
     {
-        
         var currentEnemies : Float = state.getNumberOfEnemies();
         var exponent : Float = GameProperties.EnemySpawnerExponent;
         var retval : Float = (Math.pow(currentEnemies / currentMaxEnemies, exponent)) * GameProperties.EnemySpawnerMaxTime;
         return retval;
-
     }
     
 	

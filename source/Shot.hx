@@ -2,10 +2,12 @@ package ;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.system.FlxSound;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColorUtil;
 import flixel.util.FlxPoint;
+import flixel.util.FlxRandom;
 import flixel.util.FlxVector;
 
 /**
@@ -20,6 +22,8 @@ class Shot extends FlxSprite
     private var lifetime:Float;
     
     private var type : ShotType;
+    
+    private var soundShot :FlxSound;
     
 	public function new(X:Float=0, Y:Float=0, target : FlxPoint, w:Weapon) 
 	{
@@ -39,17 +43,36 @@ class Shot extends FlxSprite
         type = w.type;
         lifetime = 10;
         
+        soundShot = new FlxSound();
+        
         if (type == ShotType.Bullet)
         {
             //makeGraphic(4, 4, FlxColorUtil.makeFromARGB(1.0, 250, 250, 250));	
             loadGraphic(AssetPaths.shot_bullet__png, false, 24, 6);
+            var rnd :Int  = FlxRandom.intRanged(0, 2);
+            var bulletVolume :Float = 0.5;
+            if (rnd == 0)
+            {
+                soundShot = FlxG.sound.load(AssetPaths.shoot1__wav, bulletVolume, false, true, false );
+            }
+            else if (rnd == 1)
+            {
+                soundShot = FlxG.sound.load(AssetPaths.shoot2__wav, bulletVolume, false, true, false );
+            }
+            else if (rnd == 2)
+            {
+                soundShot = FlxG.sound.load(AssetPaths.shoot3__wav, bulletVolume, false, true, false );
+            }
+            soundShot.play(false);
         }
 		else if (type == ShotType.Microwave)
         {
             lifetime = 4;
             loadGraphic(AssetPaths.shot_microwave__png, false, 3, 8);
             FlxTween.tween(this.scale, { x:1.5, y:3.5 }, 2);
-            FlxTween.tween(this, {alpha:0}, 2, {complete:deleteFromTween});
+            FlxTween.tween(this, { alpha:0 }, 2, { complete:deleteFromTween } );
+            soundShot = FlxG.sound.load(AssetPaths.shoot_microwave__wav, 0.25, false, true, false);
+            soundShot.play();
         }
         else
         {

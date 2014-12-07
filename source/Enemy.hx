@@ -2,6 +2,7 @@ package ;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.system.FlxSound;
 import flixel.util.FlxColorUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
@@ -24,6 +25,9 @@ class Enemy extends FlxSprite
 	private var shootTimerMax :Float;
 	
 	private var state : PlayState;
+    
+    private var soundHit : FlxSound;
+    private var soundDie : FlxSound;
 	
 	public function new(X:Float=0, Y:Float=0, playstate:PlayState) 
 	{
@@ -36,7 +40,13 @@ class Enemy extends FlxSprite
 		targetPosition = new FlxPoint();
         
         healthCurrent = healtMax = GameProperties.EnemyHealthDefault;
+        
+        soundHit = new FlxSound();
+        soundHit = FlxG.sound.load(AssetPaths.hit__wav, 1.0, false, false, false);
 		
+        soundDie = new FlxSound();
+        soundDie = FlxG.sound.load(AssetPaths.die__wav, 1.0, false, false, false);
+        
 	}
 	
 	override public function update():Void 
@@ -85,6 +95,7 @@ class Enemy extends FlxSprite
     {
         healthCurrent -= damage;
         checkDead();
+        soundHit.play(false);
     }
     
     public function checkDead() : Void
@@ -92,7 +103,7 @@ class Enemy extends FlxSprite
         if (healthCurrent <= 0)
         {
             alive = false;
-            
+            soundDie.play(false);
             spawnPickup();
             
         }

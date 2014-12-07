@@ -2,6 +2,7 @@ package ;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.system.FlxSound;
 import flixel.util.FlxColorUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
@@ -43,6 +44,8 @@ class Weapon extends FlxObject
     
     private var reloadSign : FlxSprite;
     private var outOfAmmoSign : FlxSprite;
+
+
     
     public function new() 
     {
@@ -66,7 +69,8 @@ class Weapon extends FlxObject
         reloadSign = new FlxSprite();
         reloadSign.makeGraphic(20, 20, FlxColorUtil.makeFromARGB(1.0, 125, 125, 255));
         outOfAmmoSign = new FlxSprite();
-        outOfAmmoSign.makeGraphic(20,20, FlxColorUtil.makeFromARGB(1.0, 255, 100, 100));
+        outOfAmmoSign.makeGraphic(20, 20, FlxColorUtil.makeFromARGB(1.0, 255, 100, 100));
+
     }
        
     
@@ -121,6 +125,7 @@ class Weapon extends FlxObject
         
     public function canShoot():Bool
     {
+        
         return ((shootTimerCurrent < 0) && (AmmunitionCurrent > 0) && (reloadTimer.finished));
     }
     

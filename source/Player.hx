@@ -2,6 +2,7 @@ package ;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.system.FlxSound;
 import flixel.util.FlxColorUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxVector;
@@ -27,6 +28,9 @@ class Player extends FlxSprite
     private var weapon : Weapon;
     
     private var weaponManager : WeaponManager;
+    
+    // yeah, this should be in the weapon class, but here it is more useful.
+    private var soundDeadMansClick :FlxSound;
 
 	
 	public function new(X:Float=0, Y:Float=0, playState:PlayState) 
@@ -43,8 +47,13 @@ class Player extends FlxSprite
         
         healthCurrent = healtMax = GameProperties.PlayerHealthDefault;
 		
+        soundDeadMansClick = new FlxSound();
+        soundDeadMansClick = FlxG.sound.load(AssetPaths.deadmansclick2__wav, 1.0, false, false, false);
+        
         weaponManager = new WeaponManager();
-        weapon = weaponManager.microwavegun;       
+        weapon = weaponManager.microwavegun; 
+        
+        
         
 	}
 	
@@ -76,6 +85,7 @@ class Player extends FlxSprite
         var left:Bool = FlxG.keys.anyPressed(["A", "LEFT"]);
         var right:Bool = FlxG.keys.anyPressed(["D", "RIGHT"]);
 		var shot:Bool = FlxG.mouse.pressed;
+        var shoodDMC:Bool = FlxG.mouse.justPressed;
 		var reload:Bool = FlxG.mouse.justPressedRight;
 		
 		targetPosition = FlxG.mouse.getWorldPosition(FlxG.camera);
@@ -111,7 +121,23 @@ class Player extends FlxSprite
 			{
                 shoot();
 			}		
+            else
+            {
+              
+            }
 		}
+        
+        if (shoodDMC)
+        {
+            if (!weapon.canShoot())
+            {
+                if (weapon.AmmunitionCurrent <= 0)
+                {
+                    soundDeadMansClick.play();
+                }
+            }
+        }
+        
         //trace(weapon.shootTimerCurrent);
         if (reload)
         {
