@@ -3,8 +3,10 @@ package ;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.system.FlxSound;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColorUtil;
 import flixel.util.FlxPoint;
+import flixel.util.FlxTimer;
 import flixel.util.FlxVector;
 
 using flixel.util.FlxSpriteUtil;
@@ -35,6 +37,7 @@ class Player extends FlxSprite
     private var _shieldSprite:FlxSprite;
     
     private var _shieldTimerRemaining:Float;
+    private var _slowMotionTimer :FlxTimer;
 
 
     public function new(X:Float=0, Y:Float=0, playState:PlayState) 
@@ -68,6 +71,7 @@ class Player extends FlxSprite
         weapon = weaponManager.machinegun;
         
         _shieldTimerRemaining = -1.0;
+        _slowMotionTimer = null;
     }
 	
 	override public function update():Void 
@@ -251,6 +255,19 @@ class Player extends FlxSprite
         {
             _shieldTimerRemaining = GameProperties.PickupShieldTime;
         }
+        else if (type == PickupType.PickupSlowMotion)
+        {
+            FlxTween.tween(FlxG, { timeScale:GameProperties.PickupSlowMotionTimeFactor }, 0.125);
+            
+            if (_slowMotionTimer == null )
+            {
+                _slowMotionTimer = new FlxTimer(GameProperties.PickupSlowMotionTime, resetSlowMotion);
+            }
+            else 
+            {
+                _slowMotionTimer.reset();
+            }
+        }
     }
     
     private function healfull():Void
@@ -259,4 +276,17 @@ class Player extends FlxSprite
         _healthCurrent = _healthMax;
     }
 	
+    public function resetSlowMotion (t:FlxTimer) : Void
+    {
+        FlxTween.tween(FlxG, { timeScale:1.0 }, 0.35);
+    }
+    
+    public function getHasWeapon() :Bool
+    {
+        if (weapon.name == "pistol")
+        {
+            return false;
+        }
+        return true;
+    }
 }

@@ -19,6 +19,7 @@ class WeaponManager
         pistol.Spread = 2.0;
         pistol.ShotSpeed = 400;
         pistol.type = ShotType.Bullet;
+        pistol.name = "pistol";
         
         
         machinegun = new Weapon();
@@ -30,6 +31,7 @@ class WeaponManager
         machinegun.Spread = 3.0;
         machinegun.ShotSpeed = 600;
         machinegun.type = ShotType.Bullet;
+        machinegun.name = "machinegun";
         
         shotgun = new Weapon();
         shotgun.shootTimerMax  = 0.8;
@@ -40,6 +42,7 @@ class WeaponManager
         shotgun.Spread = 12.0;
         shotgun.ShotSpeed = 500;
         shotgun.type = ShotType.Bullet;
+        shotgun.name = "shotgun";
         
         microwavegun = new Weapon();
         microwavegun.shootTimerMax  = 0.2;
@@ -50,6 +53,7 @@ class WeaponManager
         microwavegun.Spread = 2.0;
         microwavegun.ShotSpeed = 350;
         microwavegun.type = ShotType.Microwave;
+        microwavegun.name = "microwave";
     }
     
     public var pistol : Weapon;

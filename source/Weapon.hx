@@ -36,6 +36,7 @@ class Weapon extends FlxObject
     
     public var ShotSpeed : Float;
     public var type : ShotType;
+    public var name: String;
     ///////////////////////////////////////////////////////////
     
     
@@ -72,7 +73,8 @@ class Weapon extends FlxObject
         reloadSign.makeGraphic(20, 20, FlxColorUtil.makeFromARGB(1.0, 125, 125, 255));
         outOfAmmoSign = new FlxSprite();
         outOfAmmoSign.makeGraphic(20, 20, FlxColorUtil.makeFromARGB(1.0, 255, 100, 100));
-
+        
+        name = "pistol";
     }
        
     
@@ -168,6 +170,7 @@ class Weapon extends FlxObject
     {
          AmmunitionCurrent = AmminutionMax;
          shootTimerFactor = 0.5;
+         reloadTimer.reset(0.01);
          
          var t : FlxTimer = new FlxTimer(GameProperties.PickUpFireRateTime, resetFireRate);
          

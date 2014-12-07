@@ -254,4 +254,8 @@ class PlayState extends FlxState
     {
         return _enemyList.length;
     }
+    public function getPlayerHasWeapon():Bool
+    {
+        return _player.getHasWeapon();
+    }
 }

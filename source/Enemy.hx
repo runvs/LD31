@@ -121,7 +121,7 @@ class Enemy extends FlxSprite
         {
             alive = false;
             soundDie.play(false);
-            spawnPickup();
+            spawnPickup(state);
         }
     }
     
