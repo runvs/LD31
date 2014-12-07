@@ -100,9 +100,7 @@ class Player extends FlxSprite
         spriteFilter = new FlxSpriteFilter(this, 0, 0);
 		spriteFilter.addFilter(filter);
         
-        filterShield = new GlowFilter(FlxColorUtil.makeFromARGB(1.0, 178, 206, 161),1.0, 12.5, 12.5, 1.5, 1);
-        
-        spriteFilter.addFilter(filterShield);
+        filterShield = new GlowFilter(FlxColorUtil.makeFromARGB(1.0, 178, 206, 161), 1.0, 12.5, 12.5, 1.5, 1);  // will be added in pickup
         
     }
 	
