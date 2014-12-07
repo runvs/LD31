@@ -32,6 +32,8 @@ class PlayState extends FlxState
     
     private var _gameOverFade:FlxSprite;
     private var _gameOverText:FlxText;
+    private var _gameOverScoreText:FlxText;
+    private var _gameOverAgainText:FlxText;
 
     /**
      * Function that is called up when to state is created to set it up. 
@@ -41,7 +43,15 @@ class PlayState extends FlxState
         super.create();
         
         _gameOverFade = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xAA000000);
-        _gameOverText = new FlxText(FlxG.width / 4, FlxG.height / 2 - 20, Math.floor(FlxG.width / 2), "Game Over! Score: ");
+        
+        _gameOverText = new FlxText(0, FlxG.height / 2 - 20, FlxG.width, "Game Over!");
+        _gameOverText.setFormat(null, 32, 0xAAFFFFFF, "center");
+        
+        _gameOverScoreText = new FlxText(0, FlxG.height / 2 + 20, FlxG.width, "Score: ");
+        _gameOverScoreText.setFormat(null, 32, 0xAAFFFFFF, "center");
+        
+        _gameOverAgainText = new FlxText(0, FlxG.height - 40, FlxG.width, "To try again press SPACE.");
+        _gameOverAgainText.setFormat(null, 32, 0xAAFFFFFF, "center");
         
         _player = new Player(125, 125, this);
         
@@ -87,6 +97,10 @@ class PlayState extends FlxState
         
         if (_ending)
         {
+            if (FlxG.keys.justPressed.SPACE)
+            {
+                resetGame();
+            }
             return;
         }
         
@@ -177,7 +191,14 @@ class PlayState extends FlxState
         {
             _gameOverFade.draw();
             _gameOverText.draw();
+            _gameOverScoreText.draw();
+            _gameOverAgainText.draw();
         }
+    }
+    
+    private function resetGame():Void
+    {
+        FlxG.switchState(new PlayState());
     }
 
     private function cleanUp():Void
@@ -238,7 +259,7 @@ class PlayState extends FlxState
                     {
                         if (_ending == false)
                         {
-                            _gameOverText.text += _score;
+                            _gameOverScoreText.text += _score;
                         }
                         
                         _ending = true;
