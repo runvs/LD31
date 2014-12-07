@@ -31,6 +31,10 @@ class Player extends FlxSprite
     private var soundDeadMansClick : FlxSound;
     private var soundPickup : FlxSound;
     private var soundWalking : FlxSound;
+    
+    private var _shieldSprite:FlxSprite;
+    
+    private var _shieldTimerRemaining:Float;
 
 
     public function new(X:Float=0, Y:Float=0, playState:PlayState) 
@@ -44,6 +48,11 @@ class Player extends FlxSprite
         animation.add("die", [1, 2, 3, 4, 5, 6, 7, 8, 9], 30, false);
         animation.play("normal");
         
+        _shieldSprite = new FlxSprite();
+        _shieldSprite.loadGraphic(AssetPaths.shield__png, true, 16, 16);
+        _shieldSprite.animation.add("normal", [0, 1, 2, 3], 12, true);
+        _shieldSprite.animation.play("normal");
+        
         _healthCurrent = _healthMax = GameProperties.PlayerHealthDefault;
         
         soundDeadMansClick = new FlxSound();
@@ -56,12 +65,16 @@ class Player extends FlxSprite
         soundWalking = FlxG.sound.load(AssetPaths.walking__ogg, 0.25 ,true , false ,true);
         
         weaponManager = new WeaponManager();
-        weapon = weaponManager.microwavegun;
+        weapon = weaponManager.machinegun;
+        
+        _shieldTimerRemaining = -1.0;
     }
 	
 	override public function update():Void 
 	{
 		super.update();
+        _shieldSprite.x = x;
+        _shieldSprite.y = y;
 		getInput();
 		doMovement();
         
@@ -75,12 +88,21 @@ class Player extends FlxSprite
         {
             soundWalking.volume = 0.0;
         }
+        _shieldSprite.update();
+        
+        if (_shieldTimerRemaining > 0)
+        {
+            _shieldTimerRemaining -= FlxG.elapsed;
+        }
 	}
 
 	public override function draw() :Void
 	{
 		super.draw();
-        
+        if (_shieldTimerRemaining >= 0)
+        {
+            _shieldSprite.draw();
+        }
 	}
     
     public function drawHUD():Void
@@ -224,7 +246,10 @@ class Player extends FlxSprite
         else if (type == PickupType.PickupFirerate)
         {
             weapon.doFireRatePickup();
-            
+        }
+        else if (type == PickupType.PickupShield)
+        {
+            _shieldTimerRemaining = GameProperties.PickupShieldTime;
         }
     }
     
