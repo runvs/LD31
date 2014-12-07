@@ -20,7 +20,7 @@ class Player extends FlxSprite
     // this is the position, the mouse is currently at.
     private var targetPosition : FlxPoint;
     
-    private var _healthCurrent : Float;
+    public var healthCurrent : Float;
     private var _healthMax : Float;
     
     private var state:PlayState;
@@ -51,12 +51,13 @@ class Player extends FlxSprite
         animation.add("die", [1, 2, 3, 4, 5, 6, 7, 8, 9], 30, false);
         animation.play("normal");
         
+        healthCurrent = _healthMax = GameProperties.PlayerHealthDefault;
+        
         _shieldSprite = new FlxSprite();
         _shieldSprite.loadGraphic(AssetPaths.shield__png, true, 16, 16);
         _shieldSprite.animation.add("normal", [0, 1, 2, 3], 12, true);
         _shieldSprite.animation.play("normal");
         
-        _healthCurrent = _healthMax = GameProperties.PlayerHealthDefault;
         
         soundDeadMansClick = new FlxSound();
         soundDeadMansClick = FlxG.sound.load(AssetPaths.deadmansclick2__wav, 1.0, false, false, false);
@@ -209,7 +210,8 @@ class Player extends FlxSprite
         {
             e.resetShootTimer();
             
-            _healthCurrent -= GameProperties.EnemyShootDamage;
+            healthCurrent -= GameProperties.EnemyShootDamage;
+            FlxG.camera.shake(0.01, 0.2);
         }
     }
     
@@ -273,7 +275,7 @@ class Player extends FlxSprite
     private function healfull():Void
     {
         FlxG.camera.flash(FlxColorUtil.makeFromARGB(0.25, 189, 221, 184), 0.5);
-        _healthCurrent = _healthMax;
+        healthCurrent = _healthMax;
     }
 	
     public function resetSlowMotion (t:FlxTimer) : Void
