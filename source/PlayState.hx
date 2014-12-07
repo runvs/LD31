@@ -1,5 +1,7 @@
 package;
 
+import flixel.effects.particles.FlxEmitter;
+import flixel.effects.particles.FlxParticle;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -10,6 +12,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxColorUtil;
 import flixel.util.FlxMath;
 import flixel.util.FlxPoint;
+import flixel.util.FlxRandom;
 import flixel.util.FlxVector;
 import haxe.Int32;
 
@@ -39,7 +42,7 @@ class PlayState extends FlxState
     private var _gameOverText:FlxText;
     private var _gameOverScoreText:FlxText;
     private var _gameOverAgainText:FlxText;
-
+    
     /**
      * Function that is called up when to state is created to set it up. 
      */
@@ -199,7 +202,7 @@ class PlayState extends FlxState
             var s:Shot = _shotList.members[j];
             s.draw();
         }
-        
+
         _player.drawHUD();
         
         if (_ending)
@@ -210,6 +213,7 @@ class PlayState extends FlxState
             _gameOverAgainText.draw();
         }
         _vignetteSprite.draw();
+        
     }
     
     private function resetGame():Void
@@ -300,6 +304,7 @@ class PlayState extends FlxState
         {
             _score++;
         }
+
     }
     
     public function spawnShot(s:Shot) : Void
@@ -370,4 +375,5 @@ class PlayState extends FlxState
         
     }
 }
+
 

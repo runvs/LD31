@@ -38,6 +38,7 @@ class Enemy extends FlxSprite
     
     private var spriteFilter : FlxSpriteFilter;
     private var filter : DropShadowFilter;
+    private var hitSprite : FlxSprite;
 	
 	public function new(X:Float=0, Y:Float=0, playstate:PlayState, level:Float, seed:Float) 
 	{
@@ -68,6 +69,12 @@ class Enemy extends FlxSprite
         filter = new DropShadowFilter(2, 45, 0, .5, 10, 10, 1, 1);
         spriteFilter = new FlxSpriteFilter(this, 0, 0);
 		spriteFilter.addFilter(filter);
+        
+        hitSprite = new FlxSprite();
+        hitSprite.loadGraphic(AssetPaths.hitGFX__png, true, 16, 16);
+        hitSprite.scale.x = 2.0;
+        hitSprite.scale.y = 2.0;
+        hitSprite.animation.add("play", [0, 1, 2, 3, 4, 5, 6,7],15,false);
 	}
 	
 	override public function update():Void 
@@ -89,13 +96,14 @@ class Enemy extends FlxSprite
             var panPosition : Float = (x- 640.0) / 640.0 * GameProperties.SoundPanScale;
             soundHit.pan = panPosition;
         }
-        
+        hitSprite.update();
         
 	}
 	
 	public override function draw() :Void
 	{
 		super.draw();
+        hitSprite.draw();
 	}
 	
 	private function getInput() :Void 
@@ -123,6 +131,10 @@ class Enemy extends FlxSprite
         _healthCurrent -= damage;
         checkDead();
         soundHit.play(false);
+        hitSprite.x = x;
+        hitSprite.y = y;
+        hitSprite.angle = this.angle;
+        hitSprite.animation.play("play", true);
     }
     
     public function resetShootTimer() : Void
