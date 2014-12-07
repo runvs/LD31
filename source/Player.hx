@@ -221,6 +221,11 @@ class Player extends FlxSprite
         {
             healfull();
         }
+        else if (type == PickupType.PickupFirerate)
+        {
+            weapon.doFireRatePickup();
+            
+        }
     }
     
     private function healfull():Void

@@ -28,14 +28,22 @@ class Enemy extends FlxSprite
     
     private var soundHit : FlxSound;
     private var soundDie : FlxSound;
+    
+    private var _level : Float;
+    private var _seed : Float;
+    
+    private var _personalVelocityAdd : Float;
 	
-	public function new(X:Float=0, Y:Float=0, playstate:PlayState) 
+	public function new(X:Float=0, Y:Float=0, playstate:PlayState, level:Float, seed:Float) 
 	{
 		super(X, Y);
 		
 		state = playstate;
         
         shootTimerCurrent = _shootTimerMax;
+		
+        _level = level;
+        _seed = seed;
 		
 		//makeGraphic(24, 24, FlxColorUtil.makeFromARGB(1.0, 255, 125, 125));
         loadGraphic(AssetPaths.snowman__png, false, 32, 32);
@@ -48,6 +56,8 @@ class Enemy extends FlxSprite
 		
         soundDie = new FlxSound();
         soundDie = FlxG.sound.load(AssetPaths.die__wav, 1.0, false, false, false);
+        
+        _personalVelocityAdd = GameProperties.EnemyMovementVelocityAdd * Math.pow(_level*0.5, 0.125) * (1.0 + _seed);
         
 	}
 	
@@ -89,8 +99,8 @@ class Enemy extends FlxSprite
 		
 		dir.normalize();
 		
-		velocity.x += dir.x * GameProperties.EnemyMovementVelocityAdd;
-		velocity.y += dir.y * GameProperties.EnemyMovementVelocityAdd;
+		velocity.x += dir.x * _personalVelocityAdd;
+		velocity.y += dir.y * _personalVelocityAdd;
 	}
     
     public function takeDamage (damage:Float)

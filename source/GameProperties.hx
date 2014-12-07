@@ -19,11 +19,14 @@ class GameProperties
     
     public static var EnemySpawnerExponent : Float = 2.5;
     public static var EnemySpawnerMaxTime : Float = 4.5;
+    public static var EnemySpawnerTimeTilIncrease : Float = 3.5;
+    public static var EnemySpawnerLevelExponent : Float = 1.5;
     
     
     public static var SpawnerOutScreenOffset : Float = 100;
     
     public static var PickupDropProbability : Float = 0.1;  
     public static var PickupLifeTime : Float = 2.5;
+    public static var PickUpFireRateTime : Float = 5; // how long the increase lasts
 	
 }
