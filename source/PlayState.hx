@@ -6,8 +6,11 @@ import flixel.FlxState;
 import flixel.group.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
+import flixel.util.FlxColor;
+import flixel.util.FlxColorUtil;
 import flixel.util.FlxMath;
 import flixel.util.FlxPoint;
+import flixel.util.FlxVector;
 
 /**
  * A FlxState which can be used for the actual gameplay.
@@ -26,6 +29,8 @@ class PlayState extends FlxState
     private var _backgroundSprite : FlxSprite;
     private var _backgroundOverlay1 : FlxSprite;
     private var _overlayList = [];
+    
+    private var _vignetteSprite:FlxSprite;
 
     /**
      * Function that is called up when to state is created to set it up. 
@@ -40,6 +45,8 @@ class PlayState extends FlxState
         
         _backgroundOverlay1 = new FlxSprite();
         _backgroundOverlay1.loadGraphic(AssetPaths.backgroundOverlay1__png);
+        
+        createVignetteSprite();
         
         // Create random positions for the overlays
         for (i in 0...100)
@@ -156,6 +163,7 @@ class PlayState extends FlxState
         }
         
         _player.drawHUD();
+        _vignetteSprite.draw();
     }
 
     private function cleanUp():Void
@@ -258,4 +266,38 @@ class PlayState extends FlxState
     {
         return _player.getHasWeapon();
     }
+    private function createVignetteSprite():Void
+    {
+        _vignetteSprite = new FlxSprite();
+        var sizeX : Int = 1280;
+        var sizeY : Int = 720;
+        
+        _vignetteSprite.makeGraphic(sizeX, sizeY, FlxColor.BLACK);
+        
+        var centerPosition : FlxVector = new FlxVector(sizeX/2.0, sizeY/2.0);
+        trace (centerPosition);
+        var distanceToCenterMax : Float = Math.sqrt(centerPosition.x * centerPosition.x + centerPosition.y * centerPosition.y);
+        trace (distanceToCenterMax);
+        _vignetteSprite.pixels.lock();
+        for (i in 0...sizeX)
+        {
+            for (j in 0...sizeY)
+            {
+                var distanceToCenter :FlxVector = new FlxVector(centerPosition.x - i, centerPosition.y - j);
+                var newAlpha :Float = 254.0 * Math.sqrt(distanceToCenter.x * distanceToCenter.x + distanceToCenter.y * distanceToCenter.y) / distanceToCenterMax;
+                var alphaInt :Int = Math.round(newAlpha);
+                var c : Int = FlxColorUtil.getColor32(alphaInt, 0, 0, 0);
+                _vignetteSprite.pixels.setPixel(i, j, c);
+                if (newAlpha <= 5)
+                {
+                    trace (i + " " + j);
+                }
+            }
+            
+        }
+        _vignetteSprite.pixels.unlock();
+
+        
+    }
 }
+
