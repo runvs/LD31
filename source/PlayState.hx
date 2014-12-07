@@ -34,6 +34,8 @@ class PlayState extends FlxState
 
     private var _backgroundSprite : FlxSprite;
     private var _backgroundOverlay1 : FlxSprite;
+    private var _backgroundOverlay2 : FlxSprite;
+    private var _backgroundOverlay3 : FlxSprite;
     private var _overlayList = [];
     private var _vignetteSprite:FlxSprite;
     
@@ -74,11 +76,15 @@ class PlayState extends FlxState
         
         _backgroundOverlay1 = new FlxSprite();
         _backgroundOverlay1.loadGraphic(AssetPaths.backgroundOverlay1__png);
+        _backgroundOverlay2 = new FlxSprite();
+        _backgroundOverlay2.loadGraphic(AssetPaths.backgroundOverlay2__png);
+        _backgroundOverlay3 = new FlxSprite();
+        _backgroundOverlay3.loadGraphic(AssetPaths.backgroundOverlay3__png);
         
-        //createVignetteSprite();
         _vignetteSprite = new FlxSprite();
         _vignetteSprite.loadGraphic(AssetPaths.filter_vignette__png, false, 1280, 720);
         _vignetteSprite.alpha = 0.5;
+        
         // Create random positions for the overlays
         for (i in 0...100)
         {
@@ -201,9 +207,25 @@ class PlayState extends FlxState
         for (i in 0..._overlayList.length)
         {
             var p = _overlayList[i];
-            _backgroundOverlay1.x = p.x;
-            _backgroundOverlay1.y = p.y;
-            _backgroundOverlay1.draw();
+            
+            if (i % 3 == 0)
+            {
+                _backgroundOverlay1.x = p.x;
+                _backgroundOverlay1.y = p.y;
+                _backgroundOverlay1.draw();
+            }
+            else if (i % 3 == 1)
+            {
+                _backgroundOverlay2.x = p.x;
+                _backgroundOverlay2.y = p.y;
+                _backgroundOverlay2.draw();
+            }
+            else if (i % 3 == 2)
+            {
+                _backgroundOverlay3.x = p.x;
+                _backgroundOverlay3.y = p.y;
+                _backgroundOverlay3.draw();
+            }
         }
         
         _player.draw();
