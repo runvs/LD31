@@ -66,7 +66,12 @@ class Player extends FlxSprite
         soundPickup = FlxG.sound.load(AssetPaths.pickup__wav, 1.0, false, false, false);
         
         soundWalking = new FlxSound();
+        #if flash
+        soundWalking = FlxG.sound.load(AssetPaths.walking__mp3, 0.25 ,true , false ,true);
+        #else
         soundWalking = FlxG.sound.load(AssetPaths.walking__ogg, 0.25 ,true , false ,true);
+        #end
+        
         
         weaponManager = new WeaponManager();
         weapon = weaponManager.machinegun;
@@ -291,4 +296,10 @@ class Player extends FlxSprite
         }
         return true;
     }
+    
+    public function stopSound ():Void
+    {
+        soundWalking.volume = 0;
+    }
+   
 }

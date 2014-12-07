@@ -85,7 +85,12 @@ class PlayState extends FlxState
         
         _pickupList = new FlxTypedGroup<Pickup>();
         
+        #if flash
+        FlxG.sound.playMusic(AssetPaths.LD31_OST__mp3,0.5);
+        #else
         FlxG.sound.playMusic(AssetPaths.LD31_OST__ogg,0.5);
+        #end
+        
     }
 
     /**
@@ -106,6 +111,7 @@ class PlayState extends FlxState
         
         if (_ending)
         {
+            _player.stopSound();
             if (FlxG.keys.justPressed.SPACE)
             {
                 resetGame();
@@ -295,8 +301,7 @@ class PlayState extends FlxState
             _score++;
         }
     }
-
-
+    
     public function spawnShot(s:Shot) : Void
     {
         _shotList.add(s);
