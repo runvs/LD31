@@ -33,6 +33,8 @@ class Player extends FlxSprite
     private var soundDeadMansClick : FlxSound;
     private var soundPickup : FlxSound;
     private var soundWalking : FlxSound;
+    private var soundHit : FlxSound;
+    private var soundShieldHit : FlxSound;
     
     private var _shieldSprite:FlxSprite;
     
@@ -65,12 +67,19 @@ class Player extends FlxSprite
         soundPickup = new FlxSound();
         soundPickup = FlxG.sound.load(AssetPaths.pickup__wav, 1.0, false, false, false);
         
+        soundHit  = new FlxSound();
+        soundHit = FlxG.sound.load(AssetPaths.playerhit__wav, 1.0, false, false, false);
+        
+        soundShieldHit = new FlxSound();
+        soundShieldHit = FlxG.sound.load(AssetPaths.playerhit_shield__wav, 1.0, false, false, false);
+        
         soundWalking = new FlxSound();
         #if flash
         soundWalking = FlxG.sound.load(AssetPaths.walking__mp3, 0.25 ,true , false ,true);
         #else
         soundWalking = FlxG.sound.load(AssetPaths.walking__ogg, 0.25 ,true , false ,true);
         #end
+        
         
         
         weaponManager = new WeaponManager();
@@ -225,6 +234,11 @@ class Player extends FlxSprite
                 healthCurrent -= GameProperties.EnemyShootDamage;
                 FlxG.camera.shake(0.0075, 0.2);
                 FlxG.camera.flash(FlxColorUtil.makeFromARGB(0.4, 96, 33, 31), 0.2);
+                soundHit.play();
+            }
+            else
+            {
+                soundShieldHit.play();
             }
         }
     }
