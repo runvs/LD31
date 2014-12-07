@@ -7,6 +7,8 @@ import flixel.util.FlxColorUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
 import flixel.util.FlxVector;
+import flixel.effects.FlxSpriteFilter;
+import openfl._v2.filters.DropShadowFilter;
 
 /**
  * ...
@@ -33,6 +35,9 @@ class Enemy extends FlxSprite
     private var _seed : Float;
     
     private var _personalVelocityAdd : Float;
+    
+    private var spriteFilter : FlxSpriteFilter;
+    private var filter : DropShadowFilter;
 	
 	public function new(X:Float=0, Y:Float=0, playstate:PlayState, level:Float, seed:Float) 
 	{
@@ -59,6 +64,10 @@ class Enemy extends FlxSprite
         
         _personalVelocityAdd = GameProperties.EnemyMovementVelocityAdd * Math.pow(_level*0.5, 0.125) * (1.0 + _seed);
         
+        
+        filter = new DropShadowFilter(2, 45, 0, .5, 10, 10, 1, 1);
+        spriteFilter = new FlxSpriteFilter(this, 0, 0);
+		spriteFilter.addFilter(filter);
 	}
 	
 	override public function update():Void 
