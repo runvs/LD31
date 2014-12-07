@@ -37,6 +37,6 @@ class GameProperties
     
     public static var SoundPanScale : Float = 0.6;
     
-    public static var GoreAmount : Int = 10;
+    public static var GoreAmount : Int = 15;
 	
 }
