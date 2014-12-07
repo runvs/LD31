@@ -1,9 +1,13 @@
 package ;
 
+import flixel.effects.FlxSpriteFilter;
 import flixel.FlxSprite;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxAngle;
+import flixel.util.FlxColorUtil;
 import flixel.util.FlxRandom;
 import flixel.util.FlxTimer;
+import openfl._v2.filters.GlowFilter;
 
 /**
  * ...
@@ -44,6 +48,9 @@ class Pickup extends FlxSprite
     public var type :PickupType;
     
     private var numberOfRemainingFlashLoops :Int;
+    
+    private var spriteFilter : FlxSpriteFilter;
+    private var filter : GlowFilter;
     
        
     public function new(X:Float=0, Y:Float=0, pickupType:PickupType) 
@@ -94,6 +101,11 @@ class Pickup extends FlxSprite
         
         var t : FlxTimer  = new FlxTimer(GameProperties.PickupLifeTime, switchToFade);
         numberOfRemainingFlashLoops = 4;
+        
+        filter = new GlowFilter( FlxColorUtil.makeFromARGB(1.0, 145, 123, 77), 1, 15.5, 15.5, 1.5, 1);
+        spriteFilter = new FlxSpriteFilter(this, 15, 15);
+        spriteFilter.addFilter(filter);
+        
     }
     
     public function switchToFade (t:FlxTimer):Void

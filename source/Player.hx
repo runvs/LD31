@@ -1,5 +1,6 @@
 package ;
 
+import flixel.effects.FlxSpriteFilter;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.system.FlxSound;
@@ -8,8 +9,11 @@ import flixel.util.FlxColorUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxTimer;
 import flixel.util.FlxVector;
+import openfl._v2.filters.DropShadowFilter;
+import openfl._v2.filters.GlowFilter;
 
 using flixel.util.FlxSpriteUtil;
+
 
 /**
  * ...
@@ -33,11 +37,17 @@ class Player extends FlxSprite
     private var soundDeadMansClick : FlxSound;
     private var soundPickup : FlxSound;
     private var soundWalking : FlxSound;
+    private var soundHit : FlxSound;
+    private var soundShieldHit : FlxSound;
     
     private var _shieldSprite:FlxSprite;
     
     private var _shieldTimerRemaining:Float;
     private var _slowMotionTimer :FlxTimer;
+    
+    private var spriteFilter : FlxSpriteFilter;
+    private var filter : DropShadowFilter;
+    private var filterShield : GlowFilter;
 
 
     public function new(X:Float=0, Y:Float=0, playState:PlayState) 
@@ -65,14 +75,33 @@ class Player extends FlxSprite
         soundPickup = new FlxSound();
         soundPickup = FlxG.sound.load(AssetPaths.pickup__wav, 1.0, false, false, false);
         
+        soundHit  = new FlxSound();
+        soundHit = FlxG.sound.load(AssetPaths.playerhit__wav, 1.0, false, false, false);
+        
+        soundShieldHit = new FlxSound();
+        soundShieldHit = FlxG.sound.load(AssetPaths.playerhit_shield__wav, 1.0, false, false, false);
+        
         soundWalking = new FlxSound();
+        #if flash
+        soundWalking = FlxG.sound.load(AssetPaths.walking__mp3, 0.25 ,true , false ,true);
+        #else
         soundWalking = FlxG.sound.load(AssetPaths.walking__ogg, 0.25 ,true , false ,true);
+        #end
+        
+        
         
         weaponManager = new WeaponManager();
         weapon = weaponManager.machinegun;
         
         _shieldTimerRemaining = -1.0;
         _slowMotionTimer = null;
+        
+        filter = new DropShadowFilter(2, 45, 0, .5, 10, 10, 1, 1);
+        spriteFilter = new FlxSpriteFilter(this, 0, 0);
+		spriteFilter.addFilter(filter);
+        
+        filterShield = new GlowFilter(FlxColorUtil.makeFromARGB(1.0, 178, 206, 161), 1.0, 12.5, 12.5, 1.5, 1);  // will be added in pickup
+        
     }
 	
 	override public function update():Void 
@@ -99,6 +128,11 @@ class Player extends FlxSprite
         {
             _shieldTimerRemaining -= FlxG.elapsed;
         }
+        
+        var panPosition : Float = (x- 640.0) / 640.0 * GameProperties.SoundPanScale;
+        soundWalking.pan = panPosition;
+        soundDeadMansClick.pan = panPosition;
+        soundPickup.pan = panPosition;
 	}
 
 	public override function draw() :Void
@@ -210,8 +244,17 @@ class Player extends FlxSprite
         {
             e.resetShootTimer();
             
-            healthCurrent -= GameProperties.EnemyShootDamage;
-            FlxG.camera.shake(0.01, 0.2);
+            if (_shieldTimerRemaining < 0)
+            {
+                healthCurrent -= GameProperties.EnemyShootDamage;
+                FlxG.camera.shake(0.0075, 0.2);
+                FlxG.camera.flash(FlxColorUtil.makeFromARGB(0.4, 96, 33, 31), 0.2);
+                soundHit.play();
+            }
+            else
+            {
+                soundShieldHit.play();
+            }
         }
     }
     
@@ -256,6 +299,8 @@ class Player extends FlxSprite
         else if (type == PickupType.PickupShield)
         {
             _shieldTimerRemaining = GameProperties.PickupShieldTime;
+            var t : FlxTimer = new FlxTimer(GameProperties.PickupShieldTime, function (t:FlxTimer) { spriteFilter.removeFilter(filterShield); } );
+            spriteFilter.addFilter(filterShield);
         }
         else if (type == PickupType.PickupSlowMotion)
         {
@@ -291,4 +336,10 @@ class Player extends FlxSprite
         }
         return true;
     }
+    
+    public function stopSound ():Void
+    {
+        soundWalking.volume = 0;
+    }
+   
 }

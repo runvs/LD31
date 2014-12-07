@@ -1,5 +1,6 @@
 package ;
 
+import flixel.effects.FlxSpriteFilter;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.system.FlxSound;
@@ -9,6 +10,7 @@ import flixel.util.FlxColorUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
 import flixel.util.FlxVector;
+import openfl._v2.filters.GlowFilter;
 
 /**
  * ...
@@ -24,6 +26,9 @@ class Shot extends FlxSprite
     private var type : ShotType;
     
     private var soundShot :FlxSound;
+    
+    private var spriteFilter : FlxSpriteFilter;
+    private var filter : GlowFilter;
     
 	public function new(X:Float=0, Y:Float=0, target : FlxPoint, w:Weapon) 
 	{
@@ -44,6 +49,8 @@ class Shot extends FlxSprite
         lifetime = 10;
         
         soundShot = new FlxSound();
+        var panPosition : Float = (x- 640.0) / 640.0 * GameProperties.SoundPanScale;
+        soundShot.pan = panPosition;
         
         if (type == ShotType.Bullet)
         {
@@ -64,6 +71,10 @@ class Shot extends FlxSprite
                 soundShot = FlxG.sound.load(AssetPaths.shoot3__wav, bulletVolume, false, true, false );
             }
             soundShot.play(false);
+            
+            filter = new GlowFilter(FlxColorUtil.makeFromARGB(1.0,242,249,244), 1, 12.5, 12.5, 1.5, 1);
+            spriteFilter = new FlxSpriteFilter(this, 50, 50);
+            spriteFilter.addFilter(filter);
         }
 		else if (type == ShotType.Microwave)
         {
@@ -78,6 +89,10 @@ class Shot extends FlxSprite
         {
             throw "Cannot determine shot type";
         }
+        
+        
+        
+        
 	}
     
     public function push():FlxPoint

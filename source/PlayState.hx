@@ -1,5 +1,7 @@
 package;
 
+import flixel.effects.particles.FlxEmitter;
+import flixel.effects.particles.FlxParticle;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -10,6 +12,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxColorUtil;
 import flixel.util.FlxMath;
 import flixel.util.FlxPoint;
+import flixel.util.FlxRandom;
 import flixel.util.FlxVector;
 import haxe.Int32;
 
@@ -39,7 +42,7 @@ class PlayState extends FlxState
     private var _gameOverText:FlxText;
     private var _gameOverScoreText:FlxText;
     private var _gameOverAgainText:FlxText;
-
+    
     /**
      * Function that is called up when to state is created to set it up. 
      */
@@ -58,7 +61,7 @@ class PlayState extends FlxState
         _gameOverAgainText = new FlxText(0, FlxG.height - 40, FlxG.width, "To try again press SPACE.");
         _gameOverAgainText.setFormat(null, 32, 0xAAFFFFFF, "center");
         
-        _player = new Player(125, 125, this);
+        _player = new Player(640, 380, this);
         
         _backgroundSprite = new FlxSprite();
         _backgroundSprite.loadGraphic(AssetPaths.background__png);
@@ -85,7 +88,12 @@ class PlayState extends FlxState
         
         _pickupList = new FlxTypedGroup<Pickup>();
         
+        #if flash
+        FlxG.sound.playMusic(AssetPaths.LD31_OST__mp3,0.5);
+        #else
         FlxG.sound.playMusic(AssetPaths.LD31_OST__ogg,0.5);
+        #end
+        
     }
 
     /**
@@ -106,6 +114,7 @@ class PlayState extends FlxState
         
         if (_ending)
         {
+            _player.stopSound();
             if (FlxG.keys.justPressed.SPACE)
             {
                 resetGame();
@@ -193,7 +202,7 @@ class PlayState extends FlxState
             var s:Shot = _shotList.members[j];
             s.draw();
         }
-        
+
         _player.drawHUD();
         
         if (_ending)
@@ -204,6 +213,7 @@ class PlayState extends FlxState
             _gameOverAgainText.draw();
         }
         _vignetteSprite.draw();
+        
     }
     
     private function resetGame():Void
@@ -294,9 +304,9 @@ class PlayState extends FlxState
         {
             _score++;
         }
+
     }
-
-
+    
     public function spawnShot(s:Shot) : Void
     {
         _shotList.add(s);
@@ -365,4 +375,5 @@ class PlayState extends FlxState
         
     }
 }
+
 
