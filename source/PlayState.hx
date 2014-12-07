@@ -17,6 +17,7 @@ import flixel.util.FlxRandom;
 import flixel.util.FlxTimer;
 import flixel.util.FlxVector;
 import haxe.Int32;
+import openfl.geom.Rectangle;
 
 /**
  * A FlxState which can be used for the actual gameplay.
@@ -31,10 +32,13 @@ class PlayState extends FlxState
 
     private var _shotList : FlxTypedGroup<Shot>;
     private var _pickupList : FlxTypedGroup<Pickup>;
+    
 
     private var _backgroundSprite : FlxSprite;
     private var _backgroundOverlay1 : FlxSprite;
     private var _overlayList = [];
+    private var _goreLayer :FlxSprite;
+    
     private var _vignetteSprite:FlxSprite;
     
     private var _ending = false;
@@ -74,6 +78,9 @@ class PlayState extends FlxState
         
         _backgroundOverlay1 = new FlxSprite();
         _backgroundOverlay1.loadGraphic(AssetPaths.backgroundOverlay1__png);
+        
+        _goreLayer = new FlxSprite();
+        _goreLayer.makeGraphic(1280, 720, FlxColorUtil.makeFromARGB(0.1, 100, 35, 20));
         
         //createVignetteSprite();
         _vignetteSprite = new FlxSprite();
@@ -206,6 +213,8 @@ class PlayState extends FlxState
             _backgroundOverlay1.draw();
         }
         
+        _goreLayer.draw();
+        
         _player.draw();
         
         for (j in 0 ... _enemyList.length)
@@ -333,6 +342,28 @@ class PlayState extends FlxState
         e.takeDamage(s.getDamage());
         
         
+        //_goreLayer.pixels.lock();
+        
+       
+        
+        
+        for (i in 0 ... GameProperties.GoreAmount)
+        {
+            var posX : Int = FlxRandom.intRanged(Math.round(e.x) - 20, Math.round(e.x) + 20);
+            var posY : Int = FlxRandom.intRanged(Math.round(e.y) - 20, Math.round(e.y) + 20);
+            var r :Int = 81 + FlxRandom.intRanged( -5, 25);
+            var g :Int = 35 + FlxRandom.intRanged( -5, 10);
+            var b :Int = 20 + FlxRandom.intRanged( -5, 5);
+           
+            var spr : FlxSprite = new FlxSprite();
+            spr.makeGraphic(2 + FlxRandom.intRanged(0,2), 2 + FlxRandom.intRanged(0,2),  FlxColorUtil.makeFromARGB(1.0,r,g,b));
+            trace (posX + " " + posY);
+            var rect : Rectangle = new Rectangle(posX , posX, 2, 2);
+            //_goreLayer.pixels.fillRect( rect, FlxColorUtil.getColor24(255,0,0)); 
+            _goreLayer.stamp(spr, posX, posY);
+        }
+
+   
         
         if (!e.alive)
         {
