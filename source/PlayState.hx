@@ -36,6 +36,8 @@ class PlayState extends FlxState
 
     private var _backgroundSprite : FlxSprite;
     private var _backgroundOverlay1 : FlxSprite;
+    private var _backgroundOverlay2 : FlxSprite;
+    private var _backgroundOverlay3 : FlxSprite;
     private var _overlayList = [];
     private var _goreLayer :FlxSprite;
     
@@ -43,6 +45,8 @@ class PlayState extends FlxState
     
     private var _ending = false;
     private var _score = 0;
+    
+    private var _muteButton:FlxButton;
     
     private var _gameOverFade:FlxSprite;
     private var _gameOverText:FlxText;
@@ -59,6 +63,12 @@ class PlayState extends FlxState
     override public function create():Void
     {
         super.create();
+        
+        _muteButton = new FlxButton(FlxG.width - 32, 0, "", muteSound);
+        _muteButton.loadGraphic(AssetPaths.mute__png, true, 32, 32);
+        _muteButton.animation.add("on", [0]);
+        _muteButton.animation.add("off", [1]);
+        _muteButton.animation.play("on");
         
         _gameOverFade = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xAA000000);
         
@@ -78,14 +88,18 @@ class PlayState extends FlxState
         
         _backgroundOverlay1 = new FlxSprite();
         _backgroundOverlay1.loadGraphic(AssetPaths.backgroundOverlay1__png);
+        _backgroundOverlay2 = new FlxSprite();
+        _backgroundOverlay2.loadGraphic(AssetPaths.backgroundOverlay2__png);
+        _backgroundOverlay3 = new FlxSprite();
+        _backgroundOverlay3.loadGraphic(AssetPaths.backgroundOverlay3__png);
         
         _goreLayer = new FlxSprite();
         _goreLayer.makeGraphic(1280, 720, FlxColorUtil.makeFromARGB(0.1, 100, 35, 20));
         
-        //createVignetteSprite();
         _vignetteSprite = new FlxSprite();
         _vignetteSprite.loadGraphic(AssetPaths.filter_vignette__png, false, 1280, 720);
         _vignetteSprite.alpha = 0.5;
+        
         // Create random positions for the overlays
         for (i in 0...100)
         {
@@ -139,6 +153,8 @@ class PlayState extends FlxState
     override public function update():Void
     {
         super.update();
+        
+        _muteButton.update();
         
         if (_ending)
         {
@@ -208,9 +224,25 @@ class PlayState extends FlxState
         for (i in 0..._overlayList.length)
         {
             var p = _overlayList[i];
-            _backgroundOverlay1.x = p.x;
-            _backgroundOverlay1.y = p.y;
-            _backgroundOverlay1.draw();
+            
+            if (i % 3 == 0)
+            {
+                _backgroundOverlay1.x = p.x;
+                _backgroundOverlay1.y = p.y;
+                _backgroundOverlay1.draw();
+            }
+            else if (i % 3 == 1)
+            {
+                _backgroundOverlay2.x = p.x;
+                _backgroundOverlay2.y = p.y;
+                _backgroundOverlay2.draw();
+            }
+            else if (i % 3 == 2)
+            {
+                _backgroundOverlay3.x = p.x;
+                _backgroundOverlay3.y = p.y;
+                _backgroundOverlay3.draw();
+            }
         }
         
         _goreLayer.draw();
@@ -234,6 +266,7 @@ class PlayState extends FlxState
         }
 
         _player.drawHUD();
+        _muteButton.draw();
         
         _tutorialText1.draw();
         _tutorialText2.draw();
@@ -248,6 +281,20 @@ class PlayState extends FlxState
         }
         _vignetteSprite.draw();
         
+    }
+    
+    private function muteSound():Void
+    {
+        if (_muteButton.animation.name == "on")
+        {
+            _muteButton.animation.play("off");
+            FlxG.sound.muted = true;
+        }
+        else
+        {
+            _muteButton.animation.play("on");
+            FlxG.sound.muted = false;
+        }
     }
     
     private function resetGame():Void

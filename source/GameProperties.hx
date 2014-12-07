@@ -11,8 +11,8 @@ class GameProperties
 	public static var PlayerHealthDefault : Float = 15;
     
 	public static var EnemyMovementVelocityAdd : Float = 1.8;
-	public static var EnemyMovementVelocityDrag : Float = 0.96;
-    public static var EnemyHealthDefault : Float  = 8;
+	public static var EnemyMovementVelocityDrag : Float = 0.95;
+    public static var EnemyHealthDefault : Float  = 7;
     
     public static var EnemyShootDamage : Float = 4;
     public static var EnemyShootTimerMax : Float = 1.0;
