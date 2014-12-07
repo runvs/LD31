@@ -55,6 +55,8 @@ class PlayState extends FlxState
         _shotList = new FlxTypedGroup<Shot>();
         
         _pickupList = new FlxTypedGroup<Pickup>();
+        
+        FlxG.sound.playMusic(AssetPaths.LD31_OST__ogg,0.5);
     }
 
     /**
