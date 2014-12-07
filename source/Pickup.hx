@@ -49,45 +49,48 @@ class Pickup extends FlxSprite
     public function new(X:Float=0, Y:Float=0, pickupType:PickupType) 
     {
         super(X, Y);
-		
+        
         type = pickupType;
         
         if (type == PickupType.PickupWeaponPistol)
         {
-            loadGraphic(AssetPaths.pickup_pistol__png, false, 32, 32);
+            loadGraphic(AssetPaths.pickup_pistol__png, true, 32, 32);
         }
         else if (type == PickupType.PickupWeaponMachinegun)
         {
-            loadGraphic(AssetPaths.pickup_machinegun__png, false, 32, 32);
+            loadGraphic(AssetPaths.pickup_machinegun__png, true, 32, 32);
         }
         else if (type == PickupType.PickupWeaponShotgun)
         {
-            loadGraphic(AssetPaths.pickup_shotgun__png, false, 32, 32);
+            loadGraphic(AssetPaths.pickup_shotgun__png, true, 32, 32);
         }
         else if (type == PickupType.PickupWeaponMicrowavegun)
         {
-            loadGraphic(AssetPaths.pickup_microwavegun__png, false, 32, 32);
+            loadGraphic(AssetPaths.pickup_microwavegun__png, true, 32, 32);
         }
         else if  (type == PickupType.PickupHeal)
         {
-            loadGraphic(AssetPaths.pickup_heal__png, false, 32, 32);
+            loadGraphic(AssetPaths.pickup_heal__png, true, 32, 32);
         }
         else if  (type == PickupType.PickupFirerate)
         {
-            loadGraphic(AssetPaths.pickup_firerate__png, false, 32, 32);
+            loadGraphic(AssetPaths.pickup_firerate__png, true, 32, 32);
         }
         else if  (type == PickupType.PickupShield)
         {
-            loadGraphic(AssetPaths.pickup_shield__png, false, 32, 32);
+            loadGraphic(AssetPaths.pickup_shield__png, true, 32, 32);
         }
         else if  (type == PickupType.PickupSlowMotion)
         {
-            loadGraphic(AssetPaths.pickup_slowmotion__png, false, 32, 32);
+            loadGraphic(AssetPaths.pickup_slowmotion__png, true, 32, 32);
         }
         else
         {
             throw "could not determine pickup type. BAM!";
         }
+        
+        animation.add("base", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+        animation.play("base");
         
         var t : FlxTimer  = new FlxTimer(GameProperties.PickupLifeTime, switchToFade);
         numberOfRemainingFlashLoops = 4;
