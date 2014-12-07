@@ -309,7 +309,7 @@ class PlayState extends FlxState
                 {
                     _player.getHit(e);
                     
-                    if (_player.healthCurrent <= 0.0)
+                    if (_player.alive  == false)
                     {
                         if (_ending == false)
                         {

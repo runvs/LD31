@@ -67,7 +67,7 @@ class Player extends FlxSprite
         
         loadGraphic(AssetPaths.player__png, true, 16, 16);
         animation.add("normal", [0], 30, true);
-        animation.add("die", [1, 2, 3, 4, 5, 6, 7, 8, 9], 30, false);
+        animation.add("die", [1, 2, 3, 4, 5, 6, 7, 8, 9], 18, false);
         animation.play("normal");
         
         healthCurrent = _healthMax = GameProperties.PlayerHealthDefault;
@@ -288,6 +288,12 @@ class Player extends FlxSprite
             if (_shieldTimerRemaining < 0)
             {
                 healthCurrent -= GameProperties.EnemyShootDamage;
+                
+                if (healthCurrent <= 0)
+                {
+                    animation.play("die");
+                    var t:FlxTimer = new FlxTimer(0.5, function(t:FlxTimer) { alive = false; } );
+                }
                 
                 FlxTween.tween(healthBar.scale, { y : healthCurrent / _healthMax }, 0.75,  { ease: FlxEase.cubeInOut} );
                 
