@@ -12,10 +12,32 @@ import flixel.util.FlxTimer;
 class Pickup extends FlxSprite
 {
     
-    public static function getRandomPickupType (): PickupType
+    private static var _recursionDepth:Int; // for constraining picking up random pickup up picker. Hope you picked that up.
+    public static function getRandomPickupType (state:PlayState, first:Bool = true): PickupType
     {
+        if (first)
+        {
+            _recursionDepth = 0;
+        }
+        else 
+        {
+            _recursionDepth += 1;
+        }
+        
         var maxNumber = PickupType.getConstructors().length -1;  // ugly but at least dynamic        
-        return PickupType.createByIndex(FlxRandom.intRanged(0, maxNumber));
+        
+        var retval: PickupType = PickupType.createByIndex(FlxRandom.intRanged(0, maxNumber));
+        if (state.getPlayerHasWeapon())
+        {
+            if (retval == PickupType.PickupWeaponPistol || retval == PickupType.PickupWeaponMachinegun || retval == PickupType.PickupWeaponShotgun || retval == PickupType.PickupWeaponMicrowavegun)
+            {
+                if ( _recursionDepth < 3)
+                {
+                    retval = getRandomPickupType(state, false);
+                }
+            }
+        }
+        return retval;
     }
     
     
@@ -57,6 +79,10 @@ class Pickup extends FlxSprite
         else if  (type == PickupType.PickupShield)
         {
             loadGraphic(AssetPaths.pickup_shield__png, false, 32, 32);
+        }
+        else if  (type == PickupType.PickupSlowMotion)
+        {
+            loadGraphic(AssetPaths.pickup_slowmotion__png, false, 32, 32);
         }
         else
         {

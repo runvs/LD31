@@ -3,8 +3,10 @@ package ;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.system.FlxSound;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColorUtil;
 import flixel.util.FlxPoint;
+import flixel.util.FlxTimer;
 import flixel.util.FlxVector;
 
 using flixel.util.FlxSpriteUtil;
@@ -31,6 +33,11 @@ class Player extends FlxSprite
     private var soundDeadMansClick : FlxSound;
     private var soundPickup : FlxSound;
     private var soundWalking : FlxSound;
+    
+    private var _shieldSprite:FlxSprite;
+    
+    private var _shieldTimerRemaining:Float;
+    private var _slowMotionTimer :FlxTimer;
 
 
     public function new(X:Float=0, Y:Float=0, playState:PlayState) 
@@ -46,6 +53,12 @@ class Player extends FlxSprite
         
         healthCurrent = _healthMax = GameProperties.PlayerHealthDefault;
         
+        _shieldSprite = new FlxSprite();
+        _shieldSprite.loadGraphic(AssetPaths.shield__png, true, 16, 16);
+        _shieldSprite.animation.add("normal", [0, 1, 2, 3], 12, true);
+        _shieldSprite.animation.play("normal");
+        
+        
         soundDeadMansClick = new FlxSound();
         soundDeadMansClick = FlxG.sound.load(AssetPaths.deadmansclick2__wav, 1.0, false, false, false);
         
@@ -56,12 +69,17 @@ class Player extends FlxSprite
         soundWalking = FlxG.sound.load(AssetPaths.walking__ogg, 0.25 ,true , false ,true);
         
         weaponManager = new WeaponManager();
-        weapon = weaponManager.microwavegun;
+        weapon = weaponManager.machinegun;
+        
+        _shieldTimerRemaining = -1.0;
+        _slowMotionTimer = null;
     }
 	
 	override public function update():Void 
 	{
 		super.update();
+        _shieldSprite.x = x;
+        _shieldSprite.y = y;
 		getInput();
 		doMovement();
         
@@ -75,12 +93,21 @@ class Player extends FlxSprite
         {
             soundWalking.volume = 0.0;
         }
+        _shieldSprite.update();
+        
+        if (_shieldTimerRemaining > 0)
+        {
+            _shieldTimerRemaining -= FlxG.elapsed;
+        }
 	}
 
 	public override function draw() :Void
 	{
 		super.draw();
-        
+        if (_shieldTimerRemaining >= 0)
+        {
+            _shieldSprite.draw();
+        }
 	}
     
     public function drawHUD():Void
@@ -225,7 +252,23 @@ class Player extends FlxSprite
         else if (type == PickupType.PickupFirerate)
         {
             weapon.doFireRatePickup();
+        }
+        else if (type == PickupType.PickupShield)
+        {
+            _shieldTimerRemaining = GameProperties.PickupShieldTime;
+        }
+        else if (type == PickupType.PickupSlowMotion)
+        {
+            FlxTween.tween(FlxG, { timeScale:GameProperties.PickupSlowMotionTimeFactor }, 0.125);
             
+            if (_slowMotionTimer == null )
+            {
+                _slowMotionTimer = new FlxTimer(GameProperties.PickupSlowMotionTime, resetSlowMotion);
+            }
+            else 
+            {
+                _slowMotionTimer.reset();
+            }
         }
     }
     
@@ -235,4 +278,17 @@ class Player extends FlxSprite
         healthCurrent = _healthMax;
     }
 	
+    public function resetSlowMotion (t:FlxTimer) : Void
+    {
+        FlxTween.tween(FlxG, { timeScale:1.0 }, 0.35);
+    }
+    
+    public function getHasWeapon() :Bool
+    {
+        if (weapon.name == "pistol")
+        {
+            return false;
+        }
+        return true;
+    }
 }

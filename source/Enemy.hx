@@ -129,7 +129,7 @@ class Enemy extends FlxSprite
     {
         if (FlxRandom.chanceRoll(GameProperties.PickupDropProbability*100.0))   // whysoever they want it in percent and not between 0.0 and 1.0
         {
-            var p : Pickup = new Pickup(x, y, Pickup.getRandomPickupType());
+            var p : Pickup = new Pickup(x, y, Pickup.getRandomPickupType(state));
             state.spawnPickup(p);
         }
     }
