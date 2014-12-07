@@ -247,8 +247,6 @@ class PlayState extends FlxState
         
         _goreLayer.draw();
         
-        _player.draw();
-        
         for (j in 0 ... _enemyList.length)
         {
             var e:Enemy = _enemyList.members[j];
@@ -264,7 +262,8 @@ class PlayState extends FlxState
             var s:Shot = _shotList.members[j];
             s.draw();
         }
-
+        
+        _player.draw();
         _player.drawHUD();
         _muteButton.draw();
         

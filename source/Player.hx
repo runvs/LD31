@@ -172,16 +172,13 @@ class Player extends FlxSprite
         {
             _shieldSprite.draw();
         }
-        healthBar.draw();
-        ammoBar.draw();
 	}
     
     public function drawHUD():Void
     {
         weapon.draw();
-        
-       
-        
+        healthBar.draw();
+        ammoBar.draw();
     }
     
 	private function getInput() :Void

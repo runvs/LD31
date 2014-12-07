@@ -120,8 +120,6 @@ class Weapon extends FlxObject
             reloadSign.y = p.y;
             reloadSign.draw();
         }
-        
-        
     }
     
     public function shoot(multipleShot:Bool = false) : Float
