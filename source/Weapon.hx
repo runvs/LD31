@@ -170,6 +170,7 @@ class Weapon extends FlxObject
     {
          AmmunitionCurrent = AmminutionMax;
          shootTimerFactor = 0.5;
+         ReloadTimeFactor = 0.25;
          reloadTimer.reset(0.01);
          
          var t : FlxTimer = new FlxTimer(GameProperties.PickUpFireRateTime, resetFireRate);
@@ -179,6 +180,7 @@ class Weapon extends FlxObject
     public function resetFireRate(t:FlxTimer):Void
     {
         shootTimerFactor = 1.0;
+        ReloadTimeFactor = 1.0;
     }
     
 }

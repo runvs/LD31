@@ -51,7 +51,10 @@ class Player extends FlxSprite
     private var filter : DropShadowFilter;
     private var filterShield : GlowFilter;
     #end
+    
     private var healthBar : FlxSprite;
+    
+    
 
 
     public function new(X:Float=0, Y:Float=0, playState:PlayState) 
