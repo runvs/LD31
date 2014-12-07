@@ -46,12 +46,17 @@ class Player extends FlxSprite
     private var _shieldTimerRemaining:Float;
     private var _slowMotionTimer :FlxTimer;
     
+    private var _damageTimerRemaining:Float;
+    
     #if !web
     private var spriteFilter : FlxSpriteFilter;
     private var filter : DropShadowFilter;
     private var filterShield : GlowFilter;
     #end
+    
     private var healthBar : FlxSprite;
+    private var ammoBar : FlxSprite;
+    
 
 
     public function new(X:Float=0, Y:Float=0, playState:PlayState) 
@@ -115,6 +120,14 @@ class Player extends FlxSprite
         healthBar.scrollFactor.x = 0;
         healthBar.scrollFactor.y = 0;
         
+        ammoBar  = new FlxSprite();
+        ammoBar.makeGraphic(8, 720, FlxColorUtil.makeFromARGB(1.0, 242, 249, 244));
+        ammoBar.origin = new FlxPoint(0, 720);
+        ammoBar.x = 32;
+        ammoBar.y = 0;
+        ammoBar.scrollFactor.x = 0;
+        ammoBar.scrollFactor.y = 0;
+        
     }
 	
 	override public function update():Void 
@@ -141,13 +154,15 @@ class Player extends FlxSprite
         {
             _shieldTimerRemaining -= FlxG.elapsed;
         }
+        if (_damageTimerRemaining > 0)
+        {
+            _damageTimerRemaining -= FlxG.elapsed;
+        }
         
         var panPosition : Float = (x- 640.0) / 640.0 * GameProperties.SoundPanScale;
         soundWalking.pan = panPosition;
         soundDeadMansClick.pan = panPosition;
         soundPickup.pan = panPosition;
-        
-        
 	}
 
 	public override function draw() :Void
@@ -158,18 +173,14 @@ class Player extends FlxSprite
             _shieldSprite.draw();
         }
         healthBar.draw();
+        ammoBar.draw();
 	}
     
     public function drawHUD():Void
     {
         weapon.draw();
         
-        drawHealthBar();
-        
-    }
-	
-    private function drawHealthBar() : Void
-    {
+       
         
     }
     
@@ -215,6 +226,8 @@ class Player extends FlxSprite
 			if (weapon.canShoot())
 			{
                 shoot();
+               
+                FlxTween.tween(ammoBar.scale, { y: weapon.AmmunitionCurrent / weapon.AmminutionMax}, 0.25, {ease:FlxEase.quadInOut} );
 			}		
             else
             {
@@ -237,6 +250,9 @@ class Player extends FlxSprite
         if (reload)
         {
             weapon.reload();
+            FlxTween.tween(ammoBar.scale, { y: 1 }, weapon.getReloadTime(), { ease:FlxEase.quadInOut } );
+            ammoBar.alpha = 0.5;
+            var t:FlxTimer = new FlxTimer(weapon.getReloadTime(), function (t:FlxTimer) {  ammoBar.alpha = 1.0; } );
         }
 
 	}
@@ -245,17 +261,18 @@ class Player extends FlxSprite
     {
         var startX : Float = x + width / 2;
         var startY :Float  = y + height / 2;
+        var DamageShot : Bool = (_damageTimerRemaining > 0);
         
         var s: Shot  = new Shot(startX, startY, 
                                 weapon.calculateWeaponSpread(startX, startY, targetPosition), 
-                                weapon);
+                                weapon, DamageShot);
         weapon.shoot();
         state.spawnShot(s);
         for (i in 1 ... weapon.ShotsFired)
         {
             s = new Shot(startX, startY, 
                         weapon.calculateWeaponSpread(startX, startY, targetPosition), 
-                        weapon);
+                        weapon, DamageShot);
             state.spawnShot(s);
             weapon.shoot(true);
         }
@@ -343,6 +360,10 @@ class Player extends FlxSprite
             {
                 _slowMotionTimer.reset();
             }
+        }
+        else if (type == PickupType.PickupDamage)
+        {
+            _damageTimerRemaining = GameProperties.PickupDamageTime;
         }
     }
     

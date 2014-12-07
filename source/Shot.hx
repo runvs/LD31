@@ -27,14 +27,17 @@ class Shot extends FlxSprite
     
     private var soundShot :FlxSound;
     
+    public var isDamageShot:Bool;
+    
     private var spriteFilter : FlxSpriteFilter;
     #if !web
     private var filter : GlowFilter;
     #end
-	public function new(X:Float=0, Y:Float=0, target : FlxPoint, w:Weapon) 
+	public function new(X:Float=0, Y:Float=0, target : FlxPoint, w:Weapon, damageShot:Bool) 
 	{
 		super(X, Y);
                 
+        isDamageShot = damageShot;
         
         
         damage = w.getDamage();
