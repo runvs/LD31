@@ -53,6 +53,8 @@ class PlayState extends FlxState
     private var _gameOverScoreText:FlxText;
     private var _gameOverAgainText:FlxText;
     
+    private var _currentScoreText:FlxText;
+    
     private var _tutorialText1:FlxText; // movement wasd
     private var _tutorialText2:FlxText; // shoot lmb
     private var _tutorialText3:FlxText; // reload rmb
@@ -63,6 +65,9 @@ class PlayState extends FlxState
     override public function create():Void
     {
         super.create();
+        
+        _currentScoreText = new FlxText(50, 0, FlxG.width, "Score: 0 (Highscore: " + Reg.highscore + ")");
+        _currentScoreText.setFormat(null, 32, 0xAAFFFFFF, "left");
         
         _muteButton = new FlxButton(FlxG.width - 32, 0, "", muteSound);
         _muteButton.loadGraphic(AssetPaths.mute__png, true, 32, 32);
@@ -155,6 +160,7 @@ class PlayState extends FlxState
         super.update();
         
         _muteButton.update();
+        _currentScoreText.text = "Score: " + _score + " (Highscore: " + Reg.highscore + ")";
         
         if (_ending)
         {
@@ -271,6 +277,8 @@ class PlayState extends FlxState
         _tutorialText2.draw();
         _tutorialText3.draw();
         
+        _currentScoreText.draw();
+        
         if (_ending)
         {
             _gameOverFade.draw();
@@ -360,6 +368,7 @@ class PlayState extends FlxState
                         if (_ending == false)
                         {
                             _gameOverScoreText.text += _score;
+                            Reg.highscore = Reg.highscore > _score ? Reg.highscore : _score;
                         }
                         
                         _ending = true;
