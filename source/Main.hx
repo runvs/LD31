@@ -7,6 +7,7 @@ import flash.events.Event;
 import flash.Lib;
 import flixel.FlxGame;
 import flixel.FlxState;
+import flixel.util.FlxSave;
 
 class Main extends Sprite 
 {
@@ -62,6 +63,13 @@ class Main extends Sprite
 			gameWidth = Math.ceil(stageWidth / zoom);
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
+        
+        Reg.save = new FlxSave();
+        Reg.save.bind("FrenzySnowmanSmasher");
+        if (Reg.save.data.highscore == null)
+        {
+            Reg.save.data.highscore = 0;
+        }
 
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
 	}

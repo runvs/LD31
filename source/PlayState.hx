@@ -68,7 +68,7 @@ class PlayState extends FlxState
     {
         super.create();
         
-        _currentScoreText = new FlxText(50, 0, FlxG.width, "Score: 0 (Highscore: " + Reg.highscore + ")");
+        _currentScoreText = new FlxText(50, 0, FlxG.width, "Score: 0 (Highscore: " + Reg.save.data.highscore + ")");
         _currentScoreText.setFormat(null, 32, 0xAAFFFFFF, "left");
         
         _muteButton = new FlxButton(FlxG.width - 32, 0, "", muteSound);
@@ -88,7 +88,7 @@ class PlayState extends FlxState
         _gameOverAgainText = new FlxText(0, FlxG.height - 40, FlxG.width, "To try again press SPACE.");
         _gameOverAgainText.setFormat(null, 32, 0xAAFFFFFF, "center");
         
-        _gameOverBeatHighscoreText = new FlxText(0, FlxG.height / 2 + 90, FlxG.width, "You've beat your old highscore of " + Reg.highscore + "!");
+        _gameOverBeatHighscoreText = new FlxText(0, FlxG.height / 2 + 90, FlxG.width, "You've beat your old highscore of " + Reg.save.data.highscore + "!");
         _gameOverBeatHighscoreText.setFormat(null, 32, 0xAAAAFFAA, "center");
         
         _player = new Player(640, 380, this);
@@ -164,10 +164,9 @@ class PlayState extends FlxState
     {
         super.update();
         
-        _score += FlxG.elapsed;
         
         _muteButton.update();
-        _currentScoreText.text = "Score: " + Math.round(_score) + " (Highscore: " + Reg.highscore + ")";
+        _currentScoreText.text = "Score: " + Math.round(_score) + " (Highscore: " + Reg.save.data.highscore + ")";
         
         if (_ending)
         {
@@ -178,6 +177,8 @@ class PlayState extends FlxState
             }
             return;
         }
+        
+        _score += FlxG.elapsed;
         
         cleanUp();
         
@@ -382,9 +383,9 @@ class PlayState extends FlxState
                         {
                             _gameOverScoreText.text += Math.round(_score);
                             
-                            if (Reg.highscore < Math.round(_score))
+                            if (Reg.save.data.highscore < Math.round(_score))
                             {
-                                Reg.highscore = Math.round(_score);
+                                Reg.save.data.highscore = Math.round(_score);
                                 _gameOverBeatHighscore = true;
                             }
                         }
