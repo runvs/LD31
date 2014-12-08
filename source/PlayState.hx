@@ -67,7 +67,6 @@ class PlayState extends FlxState
     override public function create():Void
     {
         super.create();
-        
         _currentScoreText = new FlxText(50, 0, FlxG.width, "Score: 0 (Highscore: " + Reg.highscore + ")");
         _currentScoreText.setFormat(null, 32, 0xAAFFFFFF, "left");
         
@@ -492,6 +491,11 @@ class PlayState extends FlxState
             }
             
         }
+    }
+    
+    public function getPlayerWeaponPickupNumber () :Int 
+    {
+        return _player.getWeaponPickupNumber();
     }
 }
 

@@ -32,8 +32,9 @@ class Pickup extends FlxSprite
         
         var maxNumber = PickupType.getConstructors().length -1;  // ugly but at least dynamic        
         
-        
-        var retval: PickupType = PickupType.createByIndex(FlxRandom.intRanged(0, maxNumber));
+        var arr :Array<Int> = new Array<Int>();
+        arr.push(state.getPlayerWeaponPickupNumber());
+        var retval: PickupType = PickupType.createByIndex(FlxRandom.intRanged(0, maxNumber,arr));
         if (state.getPlayerHasWeapon())
         {
             if (retval == PickupType.PickupWeaponPistol || retval == PickupType.PickupWeaponMachinegun || retval == PickupType.PickupWeaponShotgun || retval == PickupType.PickupWeaponMicrowavegun)

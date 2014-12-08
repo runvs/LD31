@@ -422,5 +422,32 @@ class Player extends FlxSprite
     {
         soundWalking.volume = 0;
     }
+    
+    public function getWeaponPickupNumber():Int
+    {
+        var retval : Int = 0;
+        var p : PickupType;
+        if (weapon.name == "pistol")
+        {
+            p = PickupType.PickupWeaponPistol;
+            retval = p.getIndex();
+        }
+        if (weapon.name == "machinegun")
+        {
+            p = PickupType.PickupWeaponMachinegun;
+            retval = p.getIndex();
+        }
+        if (weapon.name == "shotgun")
+        {
+            p = PickupType.PickupWeaponShotgun;
+            retval = p.getIndex();
+        }
+        if (weapon.name == "microwave")
+        {
+            p = PickupType.PickupWeaponMicrowavegun;
+            retval = p.getIndex();
+        }
+        return retval;
+    }
    
 }
