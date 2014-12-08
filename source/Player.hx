@@ -10,8 +10,8 @@ import flixel.util.FlxColorUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxTimer;
 import flixel.util.FlxVector;
-import openfl._v2.filters.DropShadowFilter;
-import openfl._v2.filters.GlowFilter;
+import flash.filters.DropShadowFilter;
+import flash.filters.GlowFilter;
 
 using flixel.util.FlxSpriteUtil;
 
@@ -48,11 +48,9 @@ class Player extends FlxSprite
     
     private var _damageTimerRemaining:Float;
     
-    #if !web
     private var spriteFilter : FlxSpriteFilter;
     private var filter : DropShadowFilter;
     private var filterShield : GlowFilter;
-    #end
     
     private var healthBar : FlxSprite;
     private var ammoBar : FlxSprite;
@@ -104,13 +102,11 @@ class Player extends FlxSprite
         
         _shieldTimerRemaining = -1.0;
         _slowMotionTimer = null;
-        #if !web
         filter = new DropShadowFilter(2, 45, 0, .5, 10, 10, 1, 1);
         spriteFilter = new FlxSpriteFilter(this, 0, 0);
 		spriteFilter.addFilter(filter);
         
         filterShield = new GlowFilter(FlxColorUtil.makeFromARGB(1.0, 178, 206, 161), 1.0, 12.5, 12.5, 1.5, 1);  // will be added in pickup
-        #end
         
         healthBar = new FlxSprite();
         healthBar.makeGraphic(32, 720, FlxColorUtil.makeFromARGB(1.0, 96, 33, 31));
@@ -345,10 +341,8 @@ class Player extends FlxSprite
         else if (type == PickupType.PickupShield)
         {
             _shieldTimerRemaining = GameProperties.PickupShieldTime;
-            #if !web
             var t : FlxTimer = new FlxTimer(GameProperties.PickupShieldTime, function (t:FlxTimer) { spriteFilter.removeFilter(filterShield); } );
             spriteFilter.addFilter(filterShield);
-            #end
         }
         else if (type == PickupType.PickupSlowMotion)
         {

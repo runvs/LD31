@@ -8,7 +8,7 @@ import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
 import flixel.util.FlxVector;
 import flixel.effects.FlxSpriteFilter;
-import openfl._v2.filters.DropShadowFilter;
+import flash.filters.DropShadowFilter;
 
 /**
  * ...
@@ -36,11 +36,9 @@ class Enemy extends FlxSprite
     
     private var _personalVelocityAdd : Float;
     
-    #if !web
     private var spriteFilter : FlxSpriteFilter;
     private var filter : DropShadowFilter;
-	#end
-    
+
     private var hitSprite : FlxSprite;
     
 	public function new(X:Float=0, Y:Float=0, playstate:PlayState, level:Float, seed:Float) 
@@ -68,13 +66,9 @@ class Enemy extends FlxSprite
         
         _personalVelocityAdd = GameProperties.EnemyMovementVelocityAdd * Math.pow(_level * 0.45, 0.5) * (1.0 + _seed);
         
-        trace (_personalVelocityAdd + " " + _healthCurrent);
-        
-        #if !web
         filter = new DropShadowFilter(2, 45, 0, .5, 10, 10, 1, 1);
         spriteFilter = new FlxSpriteFilter(this, 0, 0);
 		spriteFilter.addFilter(filter);
-        #end
         
         hitSprite = new FlxSprite();
         hitSprite.loadGraphic(AssetPaths.hitGFX__png, true, 16, 16);
