@@ -45,6 +45,7 @@ class PlayState extends FlxState
     
     private var _ending = false;
     private var _score = 0.0;
+    private var _roundTime = 0.0;
     
     private var _muteButton:FlxButton;
     
@@ -82,7 +83,7 @@ class PlayState extends FlxState
         _gameOverText = new FlxText(0, FlxG.height / 2 - 20, FlxG.width, "Game Over!");
         _gameOverText.setFormat(null, 32, 0xAAFFFFFF, "center");
         
-        _gameOverScoreText = new FlxText(0, FlxG.height / 2 + 20, FlxG.width, "Score: ");
+        _gameOverScoreText = new FlxText(0, FlxG.height / 2 + 20, FlxG.width, "Score: 0");
         _gameOverScoreText.setFormat(null, 32, 0xAAFFFFFF, "center");
         
         _gameOverAgainText = new FlxText(0, FlxG.height - 40, FlxG.width, "To try again press SPACE.");
@@ -179,6 +180,7 @@ class PlayState extends FlxState
         }
         
         _score += FlxG.elapsed;
+        _roundTime += FlxG.elapsed;
         
         cleanUp();
         
@@ -381,7 +383,7 @@ class PlayState extends FlxState
                     {
                         if (_ending == false)
                         {
-                            _gameOverScoreText.text += Math.round(_score);
+                            _gameOverScoreText.text = "Score: " + Math.round(_score) + ". You survived for " + Math.round(_roundTime) + " seconds.";
                             
                             if (Reg.save.data.highscore < Math.round(_score))
                             {
