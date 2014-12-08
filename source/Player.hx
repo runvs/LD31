@@ -40,6 +40,7 @@ class Player extends FlxSprite
     private var soundWalking : FlxSound;
     private var soundHit : FlxSound;
     private var soundShieldHit : FlxSound;
+    private var soundBassDrop :FlxSound;
     
     private var _shieldSprite:FlxSprite;
     
@@ -54,6 +55,8 @@ class Player extends FlxSprite
     
     private var healthBar : FlxSprite;
     private var ammoBar : FlxSprite;
+    
+    
     
 
 
@@ -88,11 +91,17 @@ class Player extends FlxSprite
         soundShieldHit = new FlxSound();
         soundShieldHit = FlxG.sound.load(AssetPaths.playerhit_shield__wav, 1.0, false, false, false);
         
+        
+        
+        
+        soundBassDrop = new FlxSound();
         soundWalking = new FlxSound();
         #if flash
-        soundWalking = FlxG.sound.load(AssetPaths.walking__mp3, 0.25 ,true , false ,true);
+        soundWalking = FlxG.sound.load(AssetPaths.walking__mp3, 0.25 , true , false , true);
+        soundBassDrop = FlxG.sound.load(AssetPaths.bassdrop__mp3, 0.75, false, false , false);
         #else
-        soundWalking = FlxG.sound.load(AssetPaths.walking__ogg, 0.25 ,true , false ,true);
+        soundWalking = FlxG.sound.load(AssetPaths.walking__ogg, 0.25 , true , false , true);
+        soundBassDrop = FlxG.sound.load(AssetPaths.bassdrop__ogg, 0.75, false, false , false);
         #end
         
         
@@ -371,6 +380,7 @@ class Player extends FlxSprite
         else if (type == PickupType.PickupSlowMotion)
         {
             FlxTween.tween(FlxG, { timeScale:GameProperties.PickupSlowMotionTimeFactor }, 0.125);
+            soundBassDrop.play(true);
             
             if (_slowMotionTimer == null )
             {
