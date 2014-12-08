@@ -177,23 +177,22 @@ class Player extends FlxSprite
         ammoBar.draw();
     }
     
-	private function getInput() :Void
-	{
-		var up:Bool = FlxG.keys.anyPressed(["W", "UP"]);
+    private function getInput() :Void
+    {
+        var up:Bool = FlxG.keys.anyPressed(["W", "UP"]);
         var down:Bool = FlxG.keys.anyPressed(["S", "DOWN"]);
         var left:Bool = FlxG.keys.anyPressed(["A", "LEFT"]);
         var right:Bool = FlxG.keys.anyPressed(["D", "RIGHT"]);
-		var shot:Bool = FlxG.mouse.pressed;
+        var shot:Bool = FlxG.mouse.pressed;
         var shoodDMC:Bool = FlxG.mouse.justPressed;
-		var reload:Bool = FlxG.mouse.justPressedRight;
-		
-		targetPosition = FlxG.mouse.getWorldPosition(FlxG.camera);
-		
-		if (!(left && right))
+        var reload:Bool = FlxG.mouse.justPressedRight;
+        
+        targetPosition = FlxG.mouse.getWorldPosition(FlxG.camera);
+        
+        if (!(left && right))
         {
             if (left)
             {
-				
                 velocity.x -= GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
             }
             else if (right)
@@ -213,20 +212,46 @@ class Player extends FlxSprite
                 velocity.y += GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
             }
         }
-		
-		if (shot)
-		{
-			if (weapon.canShoot())
-			{
+        
+        // Make sure the player can't escape the screen
+        if (x < 40)
+        {
+            x = 40;
+            velocity.x = 0;
+        }
+        
+        if (x > FlxG.width - 16)
+        {
+            x = FlxG.width - 16;
+            velocity.x = 0;
+        }
+        
+        if (y < 0)
+        {
+            y = 0;
+            velocity.y = 0;
+        }
+        
+        if (y > FlxG.height - 16)
+        {
+            y = FlxG.height - 16;
+            velocity.y = 0;
+        }
+        
+        // Shoot!
+        if (shot)
+        {
+            if (weapon.canShoot())
+            {
                 shoot();
                
                 FlxTween.tween(ammoBar.scale, { y: weapon.AmmunitionCurrent / weapon.AmminutionMax}, 0.25, {ease:FlxEase.quadInOut} );
-			}		
+            }
             else
             {
               
             }
-		}
+        }
         
         if (shoodDMC)
         {
@@ -246,8 +271,7 @@ class Player extends FlxSprite
             ammoBar.alpha = 0.5;
             var t:FlxTimer = new FlxTimer(weapon.getReloadTime(), function (t:FlxTimer) {  ammoBar.alpha = 1.0; } );
         }
-
-	}
+    }
     
     private function shoot () : Void 
     {

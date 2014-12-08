@@ -44,7 +44,7 @@ class PlayState extends FlxState
     private var _vignetteSprite:FlxSprite;
     
     private var _ending = false;
-    private var _score = 0;
+    private var _score = 0.0;
     
     private var _muteButton:FlxButton;
     
@@ -164,8 +164,10 @@ class PlayState extends FlxState
     {
         super.update();
         
+        _score += FlxG.elapsed;
+        
         _muteButton.update();
-        _currentScoreText.text = "Score: " + _score + " (Highscore: " + Reg.highscore + ")";
+        _currentScoreText.text = "Score: " + Math.round(_score) + " (Highscore: " + Reg.highscore + ")";
         
         if (_ending)
         {
@@ -194,6 +196,7 @@ class PlayState extends FlxState
             
             if (FlxG.overlap(p, _player))
             {
+                _score += GameProperties.PickupScore;
                 _player.pickUp(p.type);
                 p.alive = false;
                 p.exists = false;
@@ -377,11 +380,11 @@ class PlayState extends FlxState
                     {
                         if (_ending == false)
                         {
-                            _gameOverScoreText.text += _score;
+                            _gameOverScoreText.text += Math.round(_score);
                             
-                            if (Reg.highscore < _score)
+                            if (Reg.highscore < Math.round(_score))
                             {
-                                Reg.highscore = _score;
+                                Reg.highscore = Math.round(_score);
                                 _gameOverBeatHighscore = true;
                             }
                         }
@@ -425,11 +428,9 @@ class PlayState extends FlxState
             _goreLayer.stamp(spr, posX, posY);
         }
 
-   
-        
         if (!e.alive)
         {
-            _score++;
+            _score += GameProperties.EnemyKillScore;
         }
 
     }
