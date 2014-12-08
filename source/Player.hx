@@ -197,11 +197,11 @@ class Player extends FlxSprite
         {
             if (left)
             {
-                velocity.x -= GameProperties.PlayerMovementVelocityAdd;
+                velocity.x -= GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
             }
             else if (right)
             {
-                velocity.x += GameProperties.PlayerMovementVelocityAdd;
+                velocity.x += GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
             }
         }
         
@@ -209,11 +209,11 @@ class Player extends FlxSprite
         {
             if (up)
             {
-                velocity.y -= GameProperties.PlayerMovementVelocityAdd;
+                velocity.y -= GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
             }
             else if (down)
             {
-                velocity.y += GameProperties.PlayerMovementVelocityAdd;
+                velocity.y += GameProperties.PlayerMovementVelocityAdd / FlxG.timeScale;
             }
         }
         
@@ -330,8 +330,8 @@ class Player extends FlxSprite
     
 	private function doMovement() : Void
 	{
-		velocity.x *= GameProperties.PlayerMovementVelocityDrag;
-        velocity.y *= GameProperties.PlayerMovementVelocityDrag;
+		velocity.x *= GameProperties.PlayerMovementVelocityDrag ;
+        velocity.y *= GameProperties.PlayerMovementVelocityDrag ;
 		
 		// turning stuff
 		var dir :FlxVector = new FlxVector( targetPosition.x - x, targetPosition.y - y );

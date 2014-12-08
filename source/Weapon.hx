@@ -88,7 +88,7 @@ class Weapon extends FlxObject
         super.update();
         if (shootTimerCurrent >= 0)
         {
-            shootTimerCurrent -= FlxG.elapsed;
+            shootTimerCurrent -= FlxG.elapsed / FlxG.timeScale;
         }
         
         reloadSign.update();

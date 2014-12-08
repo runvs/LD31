@@ -38,8 +38,8 @@ class WeaponManager
         shotgun.AmminutionMax   = shotgun.AmmunitionCurrent = 5;
         shotgun.DamageBase = 3;
         shotgun.ReloadTime = 2.5;// Reload Time in Seconds
-        shotgun.ShotsFired = 7;
-        shotgun.Spread = 12.5;
+        shotgun.ShotsFired = 6;
+        shotgun.Spread = 11.5;
         shotgun.ShotSpeed = 500;
         shotgun.type = ShotType.Bullet;
         shotgun.name = "shotgun";
