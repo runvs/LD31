@@ -52,6 +52,8 @@ class PlayState extends FlxState
     private var _gameOverText:FlxText;
     private var _gameOverScoreText:FlxText;
     private var _gameOverAgainText:FlxText;
+    private var _gameOverBeatHighscoreText:FlxText;
+    private var _gameOverBeatHighscore:Bool = false;
     
     private var _currentScoreText:FlxText;
     
@@ -85,6 +87,9 @@ class PlayState extends FlxState
         
         _gameOverAgainText = new FlxText(0, FlxG.height - 40, FlxG.width, "To try again press SPACE.");
         _gameOverAgainText.setFormat(null, 32, 0xAAFFFFFF, "center");
+        
+        _gameOverBeatHighscoreText = new FlxText(0, FlxG.height / 2 + 90, FlxG.width, "You've beat your old highscore of " + Reg.highscore + "!");
+        _gameOverBeatHighscoreText.setFormat(null, 32, 0xAAAAFFAA, "center");
         
         _player = new Player(640, 380, this);
         
@@ -285,6 +290,11 @@ class PlayState extends FlxState
             _gameOverText.draw();
             _gameOverScoreText.draw();
             _gameOverAgainText.draw();
+            
+            if (_gameOverBeatHighscore)
+            {
+                _gameOverBeatHighscoreText.draw();
+            }
         }
         _vignetteSprite.draw();
         
@@ -368,7 +378,12 @@ class PlayState extends FlxState
                         if (_ending == false)
                         {
                             _gameOverScoreText.text += _score;
-                            Reg.highscore = Reg.highscore > _score ? Reg.highscore : _score;
+                            
+                            if (Reg.highscore < _score)
+                            {
+                                Reg.highscore = _score;
+                                _gameOverBeatHighscore = true;
+                            }
                         }
                         
                         _ending = true;
