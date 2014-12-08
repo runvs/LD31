@@ -18,9 +18,9 @@ class GameProperties
     public static var EnemyShootTimerMax : Float = 1.0;
     
     public static var EnemySpawnerExponent : Float = 2.5;
-    public static var EnemySpawnerMaxTime : Float = 0.75;
+    public static var EnemySpawnerMaxTime : Float = 0.6;
     public static var EnemySpawnerTimeTilIncrease : Float = 5.5;
-    public static var EnemySpawnerLevelExponent : Float = 1.5;
+    public static var EnemySpawnerLevelExponent : Float = 1.75;
     
     public static var SpawnerOutScreenOffset : Float = 100;
     
