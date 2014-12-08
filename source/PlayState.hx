@@ -162,8 +162,6 @@ class PlayState extends FlxState
         _muteButton.update();
         _currentScoreText.text = "Score: " + _score + " (Highscore: " + Reg.highscore + ")";
         
-        trace (_enemyList.length + " " + _shotList.length);
-        
         if (_ending)
         {
             _player.stopSound();
