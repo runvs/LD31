@@ -10,9 +10,9 @@ class GameProperties
 	public static var PlayerMovementVelocityDrag : Float = 0.9;
 	public static var PlayerHealthDefault : Float = 15;
     
-	public static var EnemyMovementVelocityAdd : Float = 1.8;
-	public static var EnemyMovementVelocityDrag : Float = 0.95;
-    public static var EnemyHealthDefault : Float  = 7;
+	public static var EnemyMovementVelocityAdd : Float = 2.8;
+	public static var EnemyMovementVelocityDrag : Float = 0.93;
+    public static var EnemyHealthDefault : Float  = 9;
     
     public static var EnemyKillScore = 20;
     public static var PickupScore = 10;

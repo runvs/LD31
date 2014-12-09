@@ -90,7 +90,7 @@ class EnemySpawner extends FlxObject
 	private function spawnEnemy () : Void 
 	{
 		var pos : FlxPoint = getRandomSpawnPosition();
-        var level : Float = Math.pow((currentMaxEnemies / 8.0), GameProperties.EnemySpawnerLevelExponent);
+        var level : Float = Math.pow((currentMaxEnemies / 6.0), GameProperties.EnemySpawnerLevelExponent);
 		var e :Enemy = new Enemy(pos.x, pos.y, state, level, FlxRandom.floatRanged( -0.25, 0.25));
 		
 		state.spawnEnemy(e);
