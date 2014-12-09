@@ -98,10 +98,10 @@ class Player extends FlxSprite
         soundWalking = new FlxSound();
         #if flash
         soundWalking = FlxG.sound.load(AssetPaths.walking__mp3, 0.25 , true , false , true);
-        soundBassDrop = FlxG.sound.load(AssetPaths.bassdrop__mp3, 0.75, false, false , false);
+        soundBassDrop = FlxG.sound.load(AssetPaths.bassdrop__mp3, 0.85, false, false , false);
         #else
         soundWalking = FlxG.sound.load(AssetPaths.walking__ogg, 0.25 , true , false , true);
-        soundBassDrop = FlxG.sound.load(AssetPaths.bassdrop__ogg, 0.75, false, false , false);
+        soundBassDrop = FlxG.sound.load(AssetPaths.bassdrop__ogg, 0.85, false, false , false);
         #end
         
         
